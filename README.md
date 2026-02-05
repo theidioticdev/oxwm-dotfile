@@ -49,13 +49,6 @@ yay -S kitty rofi dunst nm-applet xwallpaper flameshot \
        pipewire wireplumber playerctl ttf-jetbrains-mono-nerd
 ```
 
-### Display Manager (Ly) (you could skip this, any Display Manager works fine)
-
-```bash
-yay -S ly
-sudo systemctl enable ly@tty1 (anything tty works fine)
-```
-
 ### Installing the Config
 
 ```bash
