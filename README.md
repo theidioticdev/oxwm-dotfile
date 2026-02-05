@@ -68,7 +68,7 @@ cp -r config.jsonc goku.png ~/.config/fastfetch
 mkdir -p ~/path/to/wallpapers
 cp wallpapers/dunes.png (or any wallpaper you have) ~/path/to/wallpapers/
 
-# Restart OXWM or log out and back in
+# Click Super + Shift + R to hot reload the config
 ```
 
 ## Usage
