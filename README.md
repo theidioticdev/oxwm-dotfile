@@ -57,10 +57,12 @@ git clone https://github.com/YOUR_USERNAME/oxwm-dotfile
 cd oxwm-dotfile
 
 # Backup existing config if you have one
-mv ~/.config/oxwm ~/.config/oxwm.backup
+mv ~/.config/oxwm /path/to/backup
+mv ~/.config/fastfetch/config.jsonc /path/to/backup
 
 # Copy config
 cp -r oxwm ~/.config/
+cp -r config.jsonc goku.png ~/.config/fastfetch
 
 # Copy wallpaper (adjust path as needed)
 mkdir -p ~/path/to/wallpapers
