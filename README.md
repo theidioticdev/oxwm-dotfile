@@ -1,6 +1,6 @@
-# OXWM Dotfiles
+# OXWM Dotfile
 
-My personal OXWM configuration, feel free to try it out!
+My personal OXWM + fastfetch configs, feel free to try it out!
 
 ![Screenshot](screenshot.png)
 
