@@ -70,8 +70,8 @@ mv ~/.config/oxwm ~/.config/oxwm.backup
 cp -r oxwm ~/.config/
 
 # Copy wallpaper (adjust path as needed)
-mkdir -p ~/Desktop/mystuff/wallpapers
-cp wallpapers/dunes.png ~/Desktop/mystuff/wallpapers/
+mkdir -p ~/path/to/wallpapers
+cp wallpapers/dunes.png (or any wallpaper you have) ~/path/to/wallpapers/
 
 # Restart OXWM or log out and back in
 ```
