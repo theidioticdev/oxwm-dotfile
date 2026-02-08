@@ -1,5 +1,10 @@
 # OXWM Dotfile
 
+![Arch](https://img.shields.io/badge/Arch-Based-1793D1?logo=arch-linux&logoColor=white)
+![Rust](https://img.shields.io/badge/WM-Rust-orange)
+![OXWM](https://img.shields.io/badge/WM-OXWM-blue)
+
+
 My personal OXWM + fastfetch configs, feel free to try it out!
 
 ![Screenshot](screenshot.png)
@@ -19,7 +24,7 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 
 - **OS**: CachyOS (Arch-based with performance optimizations)
 - **WM**: OXWM
-- **Display Manager**: Ly (minimal TUI display manager 
+- **Display Manager**: Ly (minimal TUI display manager)
 - **Terminal**: Kitty
 - **Launcher**: Rofi
 - **Browser**: Brave
@@ -45,15 +50,19 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 yay -S oxwm-git
 
 # Additional tools used in config
-yay -S kitty rofi dunst nm-applet xwallpaper flameshot \
-       pipewire wireplumber playerctl ttf-jetbrains-mono-nerd
+run install.sh 
+
+OR (if you do not want to run scripts)
+# replace yay with paru if you want
+yay -S kitty brave-bin rofi flameshot maim xclip playerctl blueman thunar\
+xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-jetbrains-mono-nerd
 ```
 
 ### Installing the Config
 
 ```bash
 # Clone this repo
-git clone https://github.com/YOUR_USERNAME/oxwm-dotfile
+git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
 # Backup existing config if you have one
@@ -66,8 +75,8 @@ cp -r config.jsonc goku.png ~/.config/fastfetch
 
 # Copy wallpaper (adjust path as needed)
 mkdir -p ~/path/to/wallpapers
-cp wallpapers/dunes.png (or any wallpaper you have) ~/path/to/wallpapers/
-
+cp ~/oxwm-dotfile/walls ~/path/to/wallpapers/
+# you do not need to use my wallpapers, if you have your set of walls, you can use them too
 # Click Super + Shift + R to hot reload the config
 ```
 
@@ -90,6 +99,7 @@ cp wallpapers/dunes.png (or any wallpaper you have) ~/path/to/wallpapers/
 | `Super + Shift + F` | Toggle fullscreen |
 | `Super + S` | Screenshot (Flameshot) |
 | `Super + Shift + /` | Show keybind overlay |
+| `Alt + Shift` | Change keyboard layout | 
 
 ### Keychords
 
@@ -98,7 +108,8 @@ cp wallpapers/dunes.png (or any wallpaper you have) ~/path/to/wallpapers/
 | `Super + Space` → `T` | Spawn terminal |
 | `Super + Space` → `B` | Launch Brave |
 | `Super + Space` → `G` | Launch GIMP |
-
+| `Super + Space` → `C` | Spawn NMTUI |
+| `Super + Space` → `E` | Spawn Thunar |
 ### Media Keys
 
 Standard media keys work for volume, play/pause, next/previous track.

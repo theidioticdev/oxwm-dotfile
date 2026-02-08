@@ -58,6 +58,12 @@ local blocks = {
 		color = colors.cyan,
 		underline = true,
 	}),
+	oxwm.bar.block.static({
+		text = " │  ",
+		interval = 999999999,
+		color = colors.sep,
+		underline = false,
+	}),
 	oxwm.bar.block.battery({
 		format = "Bat: {}%",
 		charging = "⚡ Bat: {}%",
@@ -69,7 +75,7 @@ local blocks = {
 	}),
 
 	oxwm.bar.block.static({
-		text = " | ",
+		text = " │  ",
 		interval = 999999999,
 		color = colors.sep,
 		underline = false,
@@ -80,6 +86,12 @@ local blocks = {
 		interval = 0.5,
 		color = colors.purple,
 		underline = true,
+	}),
+	oxwm.bar.block.static({
+		text = " │  ",
+		interval = 999999999,
+		color = colors.sep,
+		underline = false,
 	}),
 	oxwm.bar.block.shell({
 		format = "  {}",
@@ -133,6 +145,9 @@ oxwm.gaps.set_outer(5, 5)
 oxwm.rule.add({ instance = "gimp", floating = true })
 oxwm.rule.add({ instance = "brave-browser", tag = 2 })
 oxwm.rule.add({ instance = "kitty", tag = 1 })
+oxwm.rule.add({ instance = "connect", floating = true })
+oxwm.rule.add({ instance = "thunar", tag = 9 })
+oxwm.rule.add({ instance = "blueman-manager", floating = true })
 -------------------------------------------------------------------------------
 -- Status Bar Configuration
 -------------------------------------------------------------------------------
@@ -156,9 +171,8 @@ oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple)
 -- Keybindings
 -------------------------------------------------------------------------------
 -- Basic window management
-
+oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
 oxwm.key.bind({ modkey }, "S", oxwm.spawn({ "flameshot gui" }))
-
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
 -- Launch Dmenu
 -- oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
@@ -302,6 +316,21 @@ oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "G" },
 }, oxwm.spawn({ "gimp" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "C" },
+}, oxwm.spawn({ "kitty --class connect -e nmtui-connect" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "E" },
+}, oxwm.spawn({ "thunar" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "M" },
+}, oxwm.spawn({ "poweroff" }))
 -------------------------------------------------------------------------------
 -- Autostart
 -------------------------------------------------------------------------------
@@ -309,7 +338,7 @@ oxwm.key.chord({
 -- Uncomment and modify these examples, or add your own
 
 -- oxwm.autostart("picom")
-oxwm.autostart("xwallpaper --zoom ~/Desktop/mystuff/wallpapers/dunes.png")
+oxwm.autostart("xwallpaper --zoom ~/dotfiles/walls/wallhaven-j5oow5.png")
 oxwm.autostart("dunst")
 oxwm.autostart("nm-applet")
 oxwm.autostart("setxkbmap -option ''")
