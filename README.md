@@ -26,6 +26,7 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 - **Browser**: Brave
 - **Theme**: Tokyo Night
 - **Font**: JetBrains Mono Nerd Font
+- **Themes included**: Catppuccin Mocha, Gruvbox, Tokyo Night, Nord
 
 ## Features
 
@@ -117,6 +118,10 @@ The config is located at `~/.config/oxwm/config.lua`.
 ### Changing Colors
 
 Edit `~/.config/oxwm/tokyonight.lua` or replace it with your own color scheme file.
+for example:
+```lua
+local colors = require("catppuccin")
+```
 
 ### Adding Keybinds
 
