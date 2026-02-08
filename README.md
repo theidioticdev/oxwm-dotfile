@@ -8,6 +8,7 @@
 My personal OXWM + fastfetch configs, feel free to try it out!
 
 ![Screenshot](screenshot.png)
+![Screenshot](floatingwindows.png)
 
 ## What is OXWM?
 
