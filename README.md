@@ -21,11 +21,10 @@ OXWM is a dynamic window manager written in Rust, inspired by dwm but with moder
 
 Check out the [official repo](https://github.com/tonybanters/oxwm) for more info.
 
-## My Setup
+## My Setup (for reference)
 
 - **OS**: CachyOS (Arch-based with performance optimizations)
 - **WM**: OXWM
-- **Display Manager**: Ly (minimal TUI display manager)
 - **Terminal**: Kitty
 - **Launcher**: Rofi
 - **Browser**: Brave
@@ -47,11 +46,11 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 ### Dependencies
 
 ```bash
-# Core
+# Installing OXWM on Arch-based distros (NixOS tutorial in OXWM's official repo, any other distro can compile it from source)
 yay -S oxwm-git
 
 # Additional tools used in config
-run install.sh 
+./install.sh 
 
 OR (if you do not want to run scripts)
 # replace yay with paru if you want
