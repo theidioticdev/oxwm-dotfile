@@ -70,12 +70,12 @@ mv ~/.config/oxwm /path/to/backup
 mv ~/.config/fastfetch/config.jsonc /path/to/backup
 
 # Copy config
-cp -r oxwm ~/.config/
-cp -r config.jsonc goku.png ~/.config/fastfetch
+cp -r ./oxwm ~/.config/
+cp -r ./fastfetch ~/.config
 
 # Copy wallpaper (adjust path as needed)
 mkdir -p ~/path/to/wallpapers
-cp ~/oxwm-dotfile/walls ~/path/to/wallpapers/
+cp ./walls ~/path/to/wallpapers/
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
 # Click Super + Shift + R to hot reload the config
 ```
