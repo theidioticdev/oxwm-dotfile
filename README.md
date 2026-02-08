@@ -136,7 +136,7 @@ After making changes, press `Super + Shift + R` to reload without restarting X.
 ## Credits
 
 - **OXWM** by [Tony](https://github.com/tonybanters/oxwm)
-- **Tokyo Night color scheme** adapted from Tony's config
+- **Tokyo Night, Nord, and Gruvbox .lua files** adapted from Tony's config
 - Inspired by the dwm and tiling WM community
 
 ## Contributing
