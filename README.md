@@ -1,7 +1,7 @@
 # OXWM Dotfile
 
 ![Arch](https://img.shields.io/badge/Arch-Based-1793D1?logo=arch-linux&logoColor=white)
-![Rust](https://img.shields.io/badge/WM-Rust-orange)
+![Rust](https://img.shields.io/badge/Config-Language-Lua-orange)
 ![OXWM](https://img.shields.io/badge/WM-OXWM-blue)
 
 
