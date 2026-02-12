@@ -72,7 +72,7 @@ cp -r ./fastfetch ~/.config
 
 # Copy wallpaper (adjust path as needed)
 mkdir -p ~/path/to/wallpapers
-cp ./walls ~/path/to/wallpapers/
+cp -r ./walls ~/path/to/wallpapers/
 
 
 sudo cp ./wallmenu /usr/local/bin/
