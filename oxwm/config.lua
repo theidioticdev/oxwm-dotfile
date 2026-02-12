@@ -339,7 +339,6 @@ oxwm.key.chord({
 -- Uncomment and modify these examples, or add your own
 
 -- oxwm.autostart("picom")
-oxwm.autostart("xwallpaper --zoom ~/dotfiles/oxwm-dotfile/walls/mountains.jpg")
 oxwm.autostart("dunst")
 oxwm.autostart("nm-applet")
 oxwm.autostart("setxkbmap -option ''")
