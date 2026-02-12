@@ -14,7 +14,7 @@ local modkey = "Mod4"
 
 local terminal = "kitty"
 
-local theme_name = "nord"
+local theme_name = "catppuccin"
 
 local colors = require(theme_name)
 -- Workspace tags
@@ -99,6 +99,12 @@ local blocks = {
 		interval = 0.5,
 		color = colors.cyan,
 		underline = true,
+	}),
+	oxwm.bar.block.static({
+		text = " │  ",
+		interval = 999999999,
+		color = colors.sep,
+		underline = false,
 	}),
 }
 
@@ -339,6 +345,7 @@ oxwm.key.chord({
 -- Uncomment and modify these examples, or add your own
 
 -- oxwm.autostart("picom")
+oxwm.autostart("xwallpaper --zoom ~/.cache/current_wallpaper")
 oxwm.autostart("dunst")
 oxwm.autostart("nm-applet")
 oxwm.autostart("setxkbmap -option ''")

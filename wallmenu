@@ -14,8 +14,9 @@ SELECTION=$(echo -e "$LIST" | rofi -dmenu -i -p "Environment Control" \
 
 if [ -n "$SELECTION" ]; then
     THEME=$(echo "$SELECTION" | cut -d'/' -f1)
+    ln -sf "$WALL_DIR/$SELECTION" "$HOME/.cache/current_wallpaper"
+    xwallpaper --zoom "$HOME/.cache/current_wallpaper"
 
-    xwallpaper --zoom "$WALL_DIR/$SELECTION"
 
     if [ -f "$CONFIG_FILE" ]; then
         sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
