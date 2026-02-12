@@ -1,9 +1,9 @@
 ---@meta
--------------------------------------------------------------------------------
--- OXWM Configuration File
--------------------------------------------------------------------------------
 
----Load type definitions for LSP
+------------------------------------
+---         OXWM Config         ----
+------------------------------------
+
 ---@module 'oxwm'
 
 -------------------------------------------------------------------------------
@@ -14,11 +14,11 @@ local modkey = "Mod4"
 
 local terminal = "kitty"
 
-local colors = require("tokyonight")
+local theme_name = "nord"
 
+local colors = require(theme_name)
 -- Workspace tags
--- local tags = { "1", "2", "3", "4", "5", "6", "7", "8", "9" }
-local tags = { "", "󰊯", "", "", "󰙯", "󱇤", "", "󱘶", "󰧮" } -- Example of nerd font icon tags
+local tags = { "", "󰊯", "󰕼", "", "󰙯", "󱇤", "", "󰊴", "" }
 
 -- Font for the status bar (use "fc-list" to see available fonts)
 local bar_font = "JetBrainsMono Nerd Font Propo:style=Bold:size=12"
@@ -65,11 +65,11 @@ local blocks = {
 		underline = false,
 	}),
 	oxwm.bar.block.battery({
-		format = "Bat: {}%",
-		charging = "⚡ Bat: {}%",
-		discharging = "- Bat: {}%",
-		full = "✓ Bat: {}%",
-		interval = 30,
+		format = "󰁹 {}%",
+		charging = "⚡󰁹 {}%",
+		discharging = "-󰁹 {}%",
+		full = "✓󰁹 {}%",
+		interval = 10,
 		color = colors.green,
 		underline = true,
 	}),
@@ -128,16 +128,16 @@ oxwm.set_layout_symbol("grid", "[G]")
 -- Width in pixels
 oxwm.border.set_width(2)
 -- Color of focused window border
-oxwm.border.set_focused_color(colors.purple)
+oxwm.border.set_focused_color(colors.blue)
 -- Color of unfocused window borders
-oxwm.border.set_unfocused_color(colors.grey)
+oxwm.border.set_unfocused_color(colors.sep)
 
 -- Smart Enabled = No border if 1 window
 oxwm.gaps.set_smart(false)
 -- Inner gaps (horizontal, vertical) in pixels
-oxwm.gaps.set_inner(5, 5)
+oxwm.gaps.set_inner(25, 25)
 -- Outer gaps (horizontal, vertical) in pixels
-oxwm.gaps.set_outer(5, 5)
+oxwm.gaps.set_outer(25, 25)
 
 -------------------------------------------------------------------------------
 -- Window Rules
@@ -145,9 +145,9 @@ oxwm.gaps.set_outer(5, 5)
 oxwm.rule.add({ instance = "gimp", floating = true })
 oxwm.rule.add({ instance = "brave-browser", tag = 2 })
 oxwm.rule.add({ instance = "kitty", tag = 1 })
-oxwm.rule.add({ instance = "connect", floating = true })
 oxwm.rule.add({ instance = "thunar", tag = 9 })
 oxwm.rule.add({ instance = "blueman-manager", floating = true })
+oxwm.rule.add({ instance = "vlc", tag = 3 })
 -------------------------------------------------------------------------------
 -- Status Bar Configuration
 -------------------------------------------------------------------------------
@@ -170,15 +170,13 @@ oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple)
 -------------------------------------------------------------------------------
 -- Keybindings
 -------------------------------------------------------------------------------
--- Basic window management
+--  Basic binds
+oxwm.key.bind({ modkey }, "V", oxwm.spawn({ "vlc" }))
 oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
 oxwm.key.bind({ modkey }, "S", oxwm.spawn({ "flameshot gui" }))
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
--- Launch Dmenu
 -- oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
 oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "rofi -show drun" }))
--- Copy screenshot to clipboard
-oxwm.key.bind({ modkey }, "S", oxwm.spawn({ "sh", "-c", "maim -s | xclip -selection clipboard -t image/png" }))
 oxwm.key.bind({ modkey }, "C", oxwm.client.kill())
 
 -- Keybind overlay - Shows important keybindings on screen
@@ -274,7 +272,7 @@ oxwm.key.bind({ modkey, "Control", "Shift" }, "8", oxwm.tag.toggletag(7))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "9", oxwm.tag.toggletag(8))
 
 -------------------------------------------------------------------------------
--- Media Controls (PipeWire/WirePlumber)
+---             Media Controls (PipeWire/WirePlumber)                       ---
 -------------------------------------------------------------------------------
 
 -- Volume Up
@@ -297,16 +295,9 @@ oxwm.key.bind({}, "XF86AudioNext", oxwm.spawn({ "playerctl", "next" }))
 oxwm.key.bind({}, "XF86AudioPrev", oxwm.spawn({ "playerctl", "previous" }))
 
 -------------------------------------------------------------------------------
--- Advanced: Keychords
+-- Keychords
 -------------------------------------------------------------------------------
--- Keychords allow you to bind multiple-key sequences (like Emacs or Vim)
 -- Format: {{modifiers}, key1}, {{modifiers}, key2}, ...
--- Example: Press Mod4+Space, then release and press T to spawn a terminal
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "T" },
-}, oxwm.spawn_terminal())
-
 oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "B" },
@@ -331,6 +322,16 @@ oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "M" },
 }, oxwm.spawn({ "poweroff" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "L" },
+}, oxwm.spawn({ "i3lock" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "W" },
+}, oxwm.spawn({ "wallmenu" }))
 -------------------------------------------------------------------------------
 -- Autostart
 -------------------------------------------------------------------------------
@@ -338,8 +339,9 @@ oxwm.key.chord({
 -- Uncomment and modify these examples, or add your own
 
 -- oxwm.autostart("picom")
-oxwm.autostart("xwallpaper --zoom ~/dotfiles/walls/wallhaven-j5oow5.png")
+oxwm.autostart("xwallpaper --zoom ~/dotfiles/oxwm-dotfile/walls/mountains.jpg")
 oxwm.autostart("dunst")
 oxwm.autostart("nm-applet")
 oxwm.autostart("setxkbmap -option ''")
 oxwm.autostart("setxkbmap -layout us,eg -option 'grp:alt_shift_toggle'")
+oxwm.autostart("xss-lock -- i3lock")

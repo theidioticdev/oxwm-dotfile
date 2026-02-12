@@ -73,6 +73,9 @@ cp -r ./fastfetch ~/.config
 # Copy wallpaper (adjust path as needed)
 mkdir -p ~/path/to/wallpapers
 cp ./walls ~/path/to/wallpapers/
+
+
+sudo cp ./wallmenu /usr/local/bin/
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
 # Click Super + Shift + R to hot reload the config
 ```
@@ -107,6 +110,8 @@ cp ./walls ~/path/to/wallpapers/
 | `Super + Space` → `G` | Launch GIMP |
 | `Super + Space` → `C` | Spawn NMTUI |
 | `Super + Space` → `E` | Spawn Thunar |
+| `Super + Space` → `W` | Spawn Wallpaper/Theme Changer |
+
 ### Media Keys
 
 Standard media keys work for volume, play/pause, next/previous track.
