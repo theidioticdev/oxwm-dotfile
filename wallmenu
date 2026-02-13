@@ -2,27 +2,35 @@
 
 WALL_DIR="$HOME/dotfiles/oxwm-dotfile/walls"
 CONFIG_FILE="$HOME/.config/oxwm/config.lua"
+THEME_DIR="$HOME/.config/oxwm/" # Adjust this to where your lua files live
 
 LIST=""
 while IFS= read -r file; do
-    LIST+="${file}\0icon\x1f${WALL_DIR}/${file}\n"
+  LIST+="${file}\0icon\x1f${WALL_DIR}/${file}\n"
 done < <(find "$WALL_DIR" -mindepth 2 -type f -printf "%P\n")
 
 SELECTION=$(echo -e "$LIST" | rofi -dmenu -i -p "Environment Control" \
-    -show-icons \
-    -theme-str 'window { width: 50%; } listview { columns: 3; lines: 3; } element { orientation: vertical; } element-icon { size: 150px; } element-text { horizontal-align: 0.5; }')
+  -show-icons \
+  -theme-str 'window { width: 50%; } listview { columns: 3; lines: 3; } element { orientation: vertical; } element-icon { size: 150px; } element-text { horizontal-align: 0.5; }')
 
 if [ -n "$SELECTION" ]; then
-    THEME=$(echo "$SELECTION" | cut -d'/' -f1)
-    ln -sf "$WALL_DIR/$SELECTION" "$HOME/.cache/current_wallpaper"
-    xwallpaper --zoom "$HOME/.cache/current_wallpaper"
+  DIR_NAME=$(echo "$SELECTION" | cut -d'/' -f1)
 
+  if [ -f "$THEME_DIR/${DIR_NAME,,}.lua" ]; then
+    THEME="${DIR_NAME,,}"
+  else
+    THEME="other"
+  fi
 
-    if [ -f "$CONFIG_FILE" ]; then
-        sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
-        
-       pgrep oxwm && xdotool key super+shift+r
-        
-        notify-send -i "$WALL_DIR/$SELECTION" "OXWM System Update" "Switched to $THEME environment"
-    fi
+  ln -sf "$WALL_DIR/$SELECTION" "$HOME/.cache/current_wallpaper"
+  xwallpaper --zoom "$HOME/.cache/current_wallpaper"
+
+  if [ -f "$CONFIG_FILE" ]; then
+    sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
+
+    # Reload OXWM
+    pgrep oxwm && xdotool key super+shift+r
+
+    notify-send -i "$WALL_DIR/$SELECTION" "OXWM System Update" "Switched to $THEME environment"
+  fi
 fi
