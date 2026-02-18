@@ -8,7 +8,7 @@ My personal OXWM + fastfetch configs, feel free to try it out!
 
 ## What is OXWM?
 
-OXWM is a dynamic window manager written in Rust, inspired by dwm but with modern improvements:
+OXWM is a dynamic window manager written in Zig, inspired by dwm but with modern improvements:
 - Lua configuration with hot-reload (no recompiling!)
 - LSP support for config autocomplete
 - Keychord support for advanced keybindings
@@ -105,7 +105,6 @@ sudo cp ./wallmenu /usr/local/bin/
 
 | Sequence | Action |
 |----------|--------|
-| `Super + Space` → `T` | Spawn terminal |
 | `Super + Space` → `B` | Launch Brave |
 | `Super + Space` → `G` | Launch GIMP |
 | `Super + Space` → `C` | Spawn NMTUI |
