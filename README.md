@@ -20,13 +20,11 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 ## My Setup (for reference)
 
 - **OS**: CachyOS (Arch-based with performance optimizations)
-- **WM**: OXWM
-- **Terminal**: Kitty
+- **Terminal**: Alacritty
 - **Launcher**: Rofi
 - **Browser**: Brave
-- **Theme**: Tokyo Night
 - **Font**: JetBrains Mono Nerd Font
-- **Themes included**: Catppuccin Mocha, Gruvbox, Tokyo Night, Nord
+- **Themes included**: Catppuccin Mocha, Gruvbox, Tokyo Night, Nord, Oxocarbon
 
 ## Features
 
