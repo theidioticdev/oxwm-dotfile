@@ -46,7 +46,7 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 # Installing OXWM on Arch-based distros (NixOS tutorial in OXWM's official repo, any other distro can compile it from source)
 yay -S oxwm-git
 
-# Additional tools used in config
+# depencencies installer
 ./install.sh 
 
 OR (if you do not want to run scripts)
