@@ -1,29 +1,27 @@
 ---@meta
 
 ------------------------------------
----         OXWM Config         ----
+---       ~ OXWM Config ~       ----
 ------------------------------------
 
 ---@module 'oxwm'
 
--------------------------------------------------------------------------------
--- Variables
--------------------------------------------------------------------------------
--- Modifier key: "Mod4" is the Super/Windows key, "Mod1" is Alt
+-----------------------
+------ Variables ------
+-----------------------
+----- Modifier key: "Mod4" is the Super/Windows key, "Mod1" is Alt
 local modkey = "Mod4"
 
-local terminal = "kitty"
+local terminal = "st"
 
-local theme_name = "catppuccin"
+local theme_name = "oxocarbon"
 
 local colors = require(theme_name)
 -- Workspace tags
 local tags = { "", "󰊯", "󰕼", "", "󰙯", "󱇤", "", "󰊴", "" }
 
 -- Font for the status bar (use "fc-list" to see available fonts)
-local bar_font = "JetBrainsMono Nerd Font Propo:style=Bold:size=12"
-
--- Status bar block
+local bar_font = "Iosevka Nerd Font Propo:style=Bold:size=12"
 
 local blocks = {
 	oxwm.bar.block.shell({
@@ -34,19 +32,19 @@ local blocks = {
 		underline = true,
 	}),
 	oxwm.bar.block.static({
-		text = " │  ",
+		text = "│",
 		interval = 999999999,
 		color = colors.sep,
 		underline = false,
 	}),
 	oxwm.bar.block.ram({
 		format = "󰍛 Ram: {used}/{total} GB",
-		interval = 5,
+		interval = 1,
 		color = colors.light_blue,
 		underline = true,
 	}),
 	oxwm.bar.block.static({
-		text = " │  ",
+		text = "│",
 		interval = 999999999,
 		color = colors.sep,
 		underline = false,
@@ -59,7 +57,7 @@ local blocks = {
 		underline = true,
 	}),
 	oxwm.bar.block.static({
-		text = " │  ",
+		text = "│",
 		interval = 999999999,
 		color = colors.sep,
 		underline = false,
@@ -75,33 +73,7 @@ local blocks = {
 	}),
 
 	oxwm.bar.block.static({
-		text = " │  ",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
-	oxwm.bar.block.shell({
-		format = "󰕾 {}",
-		command = "wpctl get-volume @DEFAULT_AUDIO_SINK@ | awk '{print $2 * 100 \"%\"}'",
-		interval = 0.5,
-		color = colors.purple,
-		underline = true,
-	}),
-	oxwm.bar.block.static({
-		text = " │  ",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
-	oxwm.bar.block.shell({
-		format = "  {}",
-		command = "setxkbmap -query | awk '/layout/ {print $2}'",
-		interval = 0.5,
-		color = colors.cyan,
-		underline = true,
-	}),
-	oxwm.bar.block.static({
-		text = " │  ",
+		text = "│",
 		interval = 999999999,
 		color = colors.sep,
 		underline = false,
@@ -114,7 +86,10 @@ local blocks = {
 oxwm.set_terminal(terminal)
 oxwm.set_modkey(modkey) -- This is for Mod + mouse binds, such as drag/resize
 oxwm.set_tags(tags)
--- Border configuration
+
+--------------------------
+-- Border configuration---
+--------------------------
 
 -------------------------------------------------------------------------------
 -- Layouts
@@ -179,12 +154,14 @@ oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple)
 --  Basic binds
 oxwm.key.bind({ modkey }, "V", oxwm.spawn({ "vlc" }))
 oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
-oxwm.key.bind({ modkey }, "S", oxwm.spawn({ "flameshot gui" }))
+oxwm.key.bind({}, "Print", oxwm.spawn({ "flameshot gui" }))
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
 -- oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
 oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "rofi -show drun" }))
 oxwm.key.bind({ modkey }, "C", oxwm.client.kill())
 
+-- Power menu script
+oxwm.key.bind({ modkey, Shift}, "M", oxwm.spawn({ "powermenu" }))
 -- Keybind overlay - Shows important keybindings on screen
 oxwm.key.bind({ modkey, "Shift" }, "Slash", oxwm.show_keybinds())
 
@@ -277,77 +254,52 @@ oxwm.key.bind({ modkey, "Control", "Shift" }, "7", oxwm.tag.toggletag(6))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "8", oxwm.tag.toggletag(7))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "9", oxwm.tag.toggletag(8))
 
+oxwm.key.bind({ modkey, "Control" }, "W", oxwm.spawn({ "wallmenu" }))
 -------------------------------------------------------------------------------
 ---             Media Controls (PipeWire/WirePlumber)                       ---
 -------------------------------------------------------------------------------
 
 -- Volume Up
-oxwm.key.bind({}, "XF86AudioRaiseVolume", oxwm.spawn({ "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%+" }))
+oxwm.key.bind({}, "XF86AudioRaiseVolume", oxwm.spawn({ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+" }))
 
 -- Volume Down
-oxwm.key.bind({}, "XF86AudioLowerVolume", oxwm.spawn({ "wpctl", "set-volume", "@DEFAULT_AUDIO_SINK@", "5%-" }))
+oxwm.key.bind({}, "XF86AudioLowerVolume", oxwm.spawn({ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" }))
 
 -- Mute
-oxwm.key.bind({}, "XF86AudioMute", oxwm.spawn({ "wpctl", "set-mute", "@DEFAULT_AUDIO_SINK@", "toggle" }))
+oxwm.key.bind({}, "XF86AudioMute", oxwm.spawn({ "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" }))
 
 -- Play/Pause
-oxwm.key.bind({}, "XF86AudioPlay", oxwm.spawn({ "playerctl", "play-pause" }))
+oxwm.key.bind({}, "XF86AudioPlay", oxwm.spawn({ "playerctl play-pause" }))
 
 -- Stop
-oxwm.key.bind({}, "XF86AudioStop", oxwm.spawn({ "playerctl", "stop" }))
+oxwm.key.bind({}, "XF86AudioStop", oxwm.spawn({ "playerctl stop" }))
 
 -- Next/Previous (Optional but handy)
-oxwm.key.bind({}, "XF86AudioNext", oxwm.spawn({ "playerctl", "next" }))
-oxwm.key.bind({}, "XF86AudioPrev", oxwm.spawn({ "playerctl", "previous" }))
+oxwm.key.bind({}, "XF86AudioNext", oxwm.spawn({ "playerctl next" }))
+oxwm.key.bind({}, "XF86AudioPrev", oxwm.spawn({ "playerctl previous" }))
 
 -------------------------------------------------------------------------------
 -- Keychords
 -------------------------------------------------------------------------------
--- Format: {{modifiers}, key1}, {{modifiers}, key2}, ...
 oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "B" },
-}, oxwm.spawn({ "brave" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "G" },
-}, oxwm.spawn({ "gimp" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "C" },
-}, oxwm.spawn({ "kitty --class connect -e nmtui-connect" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "E" },
-}, oxwm.spawn({ "thunar" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "M" },
-}, oxwm.spawn({ "poweroff" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
-	{ {}, "L" },
-}, oxwm.spawn({ "i3lock" }))
-
-oxwm.key.chord({
-	{ { modkey }, "Space" },
+	{ { "Mod4" }, "Space" },
 	{ {}, "W" },
 }, oxwm.spawn({ "wallmenu" }))
+
+oxwm.key.chord({
+	{ { "Mod4" }, "Space" },
+	{ {}, "P" },
+}, oxwm.spawn({ "powermenu" }))
+
 -------------------------------------------------------------------------------
 -- Autostart
 -------------------------------------------------------------------------------
 -- Commands to run once when OXWM starts
 -- Uncomment and modify these examples, or add your own
-
--- oxwm.autostart("picom")
-oxwm.autostart("xwallpaper --zoom ~/.cache/current_wallpaper")
+oxwm.autostart("xset r rate 300 50")
+oxwm.autostart("picom")
+oxwm.autostart("xwallpaper --zoom ~/.local/share/current_wallpaper")
 oxwm.autostart("dunst")
-oxwm.autostart("nm-applet")
 oxwm.autostart("setxkbmap -option ''")
 oxwm.autostart("setxkbmap -layout us,eg -option 'grp:alt_shift_toggle'")
 oxwm.autostart("xss-lock -- i3lock")

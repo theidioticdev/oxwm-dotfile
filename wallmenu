@@ -22,8 +22,8 @@ if [ -n "$SELECTION" ]; then
     THEME="other"
   fi
 
-  ln -sf "$WALL_DIR/$SELECTION" "$HOME/.cache/current_wallpaper"
-  xwallpaper --zoom "$HOME/.cache/current_wallpaper"
+  ln -sf "$WALL_DIR/$SELECTION" "$HOME/.local/share/current_wallpaper"
+  xwallpaper --zoom "$HOME/.local/share/current_wallpaper"
 
   if [ -f "$CONFIG_FILE" ]; then
     sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
