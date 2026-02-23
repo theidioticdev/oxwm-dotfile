@@ -19,12 +19,13 @@ fi
 
 sudo -v
 
-echo -e "${BLUE}Starting OXWM Dependency Installer for Arch-based systems...${NC}"
+echo -e "${BLUE}Starting TheIdioticdev's OXWM dotfile Dependency Installer for Arch-based systems...${NC}"
 echo -e "${BLUE}Reminder: This script only handles official repos. Make sure to install 'oxwm-git' and 'brave-bin' via your AUR helper (yay/paru).${NC}"
 PKGS=(
-  "kitty" "rofi" "flameshot" "xclip" "playerctl"
+  "alacritty" "rofi" "flameshot" "xclip" "playerctl"
   "blueman" "thunar" "xwallpaper" "dunst" "network-manager-applet"
-  "wireplumber" "xorg-setxkbmap" "gawk" "ttf-jetbrains-mono-nerd"
+  "wireplumber" "xorg-setxkbmap" "gawk" "ttf-iosevka-nerd" "pipewire"
+  "zig" "lua" "libx11" "libxft" "freetype2" "fontconfig" "libxinerama"
 )
 
 MISSING_PKGS=()

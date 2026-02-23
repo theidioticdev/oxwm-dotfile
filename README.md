@@ -19,16 +19,16 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 
 ## My Setup (for reference)
 
-- **OS**: CachyOS (Arch-based with performance optimizations)
+- **OS**: CachyOS
 - **Terminal**: Alacritty
 - **Launcher**: Rofi
 - **Browser**: Brave
-- **Font**: JetBrains Mono Nerd Font
+- **Font**: Iosevka Mono Nerd Font
 - **Themes included**: Catppuccin Mocha, Gruvbox, Tokyo Night, Nord, Oxocarbon
 
 ## Features
 
-- **Clean status bar** with kernel info, RAM usage, battery, volume, keyboard layout, and date/time
+- **Status bar** with kernel info, RAM usage, battery, volume, keyboard layout, and date/time
 - **Workspace tags** using nerd font icons instead of numbers
 - **Keychords** for advanced keybinds (Mod+Space + key combos)
 - **Window rules** for auto-tagging apps to specific workspaces
@@ -44,13 +44,14 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 # Installing OXWM on Arch-based distros (NixOS tutorial in OXWM's official repo, any other distro can compile it from source)
 yay -S oxwm-git
 
-# depencencies installer
+# Dependencies installer
 ./install.sh 
 
 OR (if you do not want to run scripts)
 # replace yay with paru if you want
-yay -S kitty brave-bin rofi flameshot maim xclip playerctl blueman thunar\
-xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-jetbrains-mono-nerd
+yay -S kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
+xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-iosevka-nerd \
+zig lua libx11 libxft freetype2 fontconfig libxinerama
 ```
 
 ### Installing the Config
@@ -61,19 +62,21 @@ git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
 # Backup existing config if you have one
-mv ~/.config/oxwm /path/to/backup
-mv ~/.config/fastfetch/config.jsonc /path/to/backup
+mv ~/.config/oxwm /path/to/backup  # replace this with an actual directory
+mv ~/.config/fastfetch/config.jsonc /path/to/backup  # replace this with an actual directory
 
 # Copy config
 cp -r ./oxwm ~/.config/
 cp -r ./fastfetch ~/.config
 
 # Copy wallpaper (adjust path as needed)
-mkdir -p ~/path/to/wallpapers
-cp -r ./walls ~/path/to/wallpapers/
+mkdir -p ~/dotfiles/  
+cp -r ./walls ~/dotfiles/
 
+# Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
+sudo cp powermenu /usr/local/bin
+sudo cp wallmenu /usr/local/bin/
 
-sudo cp ./wallmenu /usr/local/bin/
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
 # Click Super + Shift + R to hot reload the config
 ```
@@ -95,7 +98,7 @@ sudo cp ./wallmenu /usr/local/bin/
 | `Super + H/L` | Decrease/increase master area |
 | `Super + A` | Toggle gaps |
 | `Super + Shift + F` | Toggle fullscreen |
-| `Super + S` | Screenshot (Flameshot) |
+| `Prt Sc` | Screenshot (Flameshot) |
 | `Super + Shift + /` | Show keybind overlay |
 | `Alt + Shift` | Change keyboard layout | 
 
@@ -103,11 +106,10 @@ sudo cp ./wallmenu /usr/local/bin/
 
 | Sequence | Action |
 |----------|--------|
-| `Super + Space` → `B` | Launch Brave |
-| `Super + Space` → `G` | Launch GIMP |
-| `Super + Space` → `C` | Spawn NMTUI |
-| `Super + Space` → `E` | Spawn Thunar |
+| `Super + Space` → `M` | Spawn Termusic (using st) |
 | `Super + Space` → `W` | Spawn Wallpaper/Theme Changer |
+| `Super + Space` → `C` | Spawn NMTUI using kitty |
+| `Super + Space` → `T` | Spawn a tmux session named "tmuxbtw" |
 
 ### Media Keys
 
@@ -118,11 +120,12 @@ Standard media keys work for volume, play/pause, next/previous track.
 The config is located at `~/.config/oxwm/config.lua`.
 
 ### Changing Colors
-
-Edit `~/.config/oxwm/tokyonight.lua` or replace it with your own color scheme file.
+I included tonybanters' preset color scheme .lua files (tokyonight, gruvbox and nord)
+Replace the scheme included in the dotfiles with your own color scheme file if you want.
 for example:
 ```lua
-local colors = require("catppuccin")
+local theme_name = "nord"
+local colors = require(theme_name)
 ```
 
 ### Adding Keybinds
@@ -137,10 +140,8 @@ After making changes, press `Super + Shift + R` to reload without restarting X.
 
 ## Credits
 
-- **OXWM** by [Tony](https://github.com/tonybanters/oxwm)
+- **OXWM** by [Tonybtw](https://github.com/tonybanters/oxwm)
 - **Tokyo Night, Nord, and Gruvbox .lua files** adapted from Tony's config
-- Inspired by the dwm and tiling WM community
-
 ## Contributing
 
 Feel free to fork this and adapt it to your needs. If you have suggestions or improvements, open an issue or PR!

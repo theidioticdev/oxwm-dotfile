@@ -6,49 +6,52 @@
 
 ---@module 'oxwm'
 
------------------------
------- Variables ------
------------------------
------ Modifier key: "Mod4" is the Super/Windows key, "Mod1" is Alt
+-------------------------------------------------------------------------------
+-- Variables
+-------------------------------------------------------------------------------
+
+-- Modifier key: "Mod4" = Super/Windows key | "Mod1" = Alt
 local modkey = "Mod4"
 
-local terminal = "st"
+local terminal = "alacritty"
 
-local theme_name = "oxocarbon"
+local theme_name = "nord"
 
 local colors = require(theme_name)
+
 -- Workspace tags
 local tags = { "", "󰊯", "󰕼", "", "󰙯", "󱇤", "", "󰊴", "" }
 
 -- Font for the status bar (use "fc-list" to see available fonts)
 local bar_font = "Iosevka Nerd Font Propo:style=Bold:size=12"
 
+-------------------------------------------------------------------------------
+-- Bar Blocks
+-------------------------------------------------------------------------------
+
+local sep = oxwm.bar.block.static({
+	text = "│",
+	interval = 999999999,
+	color = colors.sep,
+	underline = false,
+})
+
 local blocks = {
 	oxwm.bar.block.shell({
-		format = " {}",
+		format = " {}",
 		command = "uname -r",
 		interval = 999999999,
 		color = colors.red,
 		underline = true,
 	}),
-	oxwm.bar.block.static({
-		text = "│",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
+	sep,
 	oxwm.bar.block.ram({
 		format = "󰍛 Ram: {used}/{total} GB",
 		interval = 1,
 		color = colors.light_blue,
 		underline = true,
 	}),
-	oxwm.bar.block.static({
-		text = "│",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
+	sep,
 	oxwm.bar.block.datetime({
 		format = "󰸘 {}",
 		date_format = "%a, %b %d - %-I:%M %P",
@@ -56,12 +59,7 @@ local blocks = {
 		color = colors.cyan,
 		underline = true,
 	}),
-	oxwm.bar.block.static({
-		text = "│",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
+	sep,
 	oxwm.bar.block.battery({
 		format = "󰁹 {}%",
 		charging = "⚡󰁹 {}%",
@@ -71,144 +69,113 @@ local blocks = {
 		color = colors.green,
 		underline = true,
 	}),
-
-	oxwm.bar.block.static({
-		text = "│",
-		interval = 999999999,
-		color = colors.sep,
-		underline = false,
-	}),
+	sep,
 }
 
 -------------------------------------------------------------------------------
 -- Basic Settings
 -------------------------------------------------------------------------------
+
 oxwm.set_terminal(terminal)
-oxwm.set_modkey(modkey) -- This is for Mod + mouse binds, such as drag/resize
+oxwm.set_modkey(modkey) -- Used for Mod + mouse binds (drag/resize)
 oxwm.set_tags(tags)
 
---------------------------
--- Border configuration---
---------------------------
+-------------------------------------------------------------------------------
+-- Appearance
+-------------------------------------------------------------------------------
+
+-- Border
+oxwm.border.set_width(2)
+oxwm.border.set_focused_color(colors.blue)
+oxwm.border.set_unfocused_color(colors.sep)
+
+-- Gaps (Smart = no border when only 1 window)
+oxwm.gaps.set_smart(true)
+oxwm.gaps.set_inner(25, 25) -- (horizontal, vertical) in pixels
+oxwm.gaps.set_outer(25, 25) -- (horizontal, vertical) in pixels
 
 -------------------------------------------------------------------------------
 -- Layouts
 -------------------------------------------------------------------------------
--- Set custom symbols for layouts (displayed in the status bar)
--- Available layouts: "tiling", "normie" (floating), "grid", "monocle", "tabbed"
+-- Available: "tiling", "normie" (floating), "grid", "monocle", "tabbed"
+
 oxwm.set_layout_symbol("tiling", "[T]")
 oxwm.set_layout_symbol("normie", "[F]")
 oxwm.set_layout_symbol("tabbed", "[=]")
 oxwm.set_layout_symbol("monocle", "[M]")
 oxwm.set_layout_symbol("grid", "[G]")
--------------------------------------------------------------------------------
--- Appearance
--------------------------------------------------------------------------------
--- Border configuration
-
--- Width in pixels
-oxwm.border.set_width(2)
--- Color of focused window border
-oxwm.border.set_focused_color(colors.blue)
--- Color of unfocused window borders
-oxwm.border.set_unfocused_color(colors.sep)
-
--- Smart Enabled = No border if 1 window
-oxwm.gaps.set_smart(false)
--- Inner gaps (horizontal, vertical) in pixels
-oxwm.gaps.set_inner(25, 25)
--- Outer gaps (horizontal, vertical) in pixels
-oxwm.gaps.set_outer(25, 25)
 
 -------------------------------------------------------------------------------
 -- Window Rules
 -------------------------------------------------------------------------------
-oxwm.rule.add({ instance = "gimp", floating = true })
-oxwm.rule.add({ instance = "brave-browser", tag = 2 })
-oxwm.rule.add({ instance = "kitty", tag = 1 })
-oxwm.rule.add({ instance = "thunar", tag = 9 })
-oxwm.rule.add({ instance = "blueman-manager", floating = true })
-oxwm.rule.add({ instance = "vlc", tag = 3 })
--------------------------------------------------------------------------------
--- Status Bar Configuration
--------------------------------------------------------------------------------
--- Font configuration
-oxwm.bar.set_font(bar_font)
 
--- Set your blocks here (defined above)
+oxwm.rule.add({ instance = "blueman-manager", floating = true })
+oxwm.rule.add({ instance = "brave-browser", tag = 2 })
+oxwm.rule.add({ instance = "gimp", floating = true })
+oxwm.rule.add({ instance = "thunar", tag = 9 })
+oxwm.rule.add({ instance = "vlc", tag = 3 })
+oxwm.rule.add({ instance = "connect", floating = true })
+
+-------------------------------------------------------------------------------
+-- Status Bar
+-------------------------------------------------------------------------------
+
+oxwm.bar.set_font(bar_font)
 oxwm.bar.set_blocks(blocks)
 
--- Bar color schemes (for workspace tag display)
--- Parameters: foreground, background, border
-
--- Unoccupied tags
-oxwm.bar.set_scheme_normal(colors.fg, colors.bg, "#444444")
--- Occupied tags
-oxwm.bar.set_scheme_occupied(colors.cyan, colors.bg, colors.cyan)
--- Currently selected tag
-oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple)
+-- Color schemes for workspace tags (foreground, background, border)
+oxwm.bar.set_scheme_normal(colors.fg, colors.bg, "#444444") -- Unoccupied
+oxwm.bar.set_scheme_occupied(colors.cyan, colors.bg, colors.cyan) -- Occupied
+oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple) -- Selected
 
 -------------------------------------------------------------------------------
 -- Keybindings
 -------------------------------------------------------------------------------
---  Basic binds
-oxwm.key.bind({ modkey }, "V", oxwm.spawn({ "vlc" }))
-oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
-oxwm.key.bind({}, "Print", oxwm.spawn({ "flameshot gui" }))
+
+-- Apps
+--                Modifiers   |   Key   |    Action
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
--- oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
 oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "rofi -show drun" }))
+oxwm.key.bind({ modkey, "Shift" }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
+oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
+oxwm.key.bind({ modkey, "Shift" }, "B", oxwm.spawn({ "brave" }))
+oxwm.key.bind({ modkey }, "V", oxwm.spawn({ "vlc" }))
+oxwm.key.bind({}, "Print", oxwm.spawn({ "flameshot gui" }))
+oxwm.key.bind({ modkey }, "E", oxwm.spawn({ "thunar" }))
+-- Window management
 oxwm.key.bind({ modkey }, "C", oxwm.client.kill())
-
--- Power menu script
-oxwm.key.bind({ modkey, Shift}, "M", oxwm.spawn({ "powermenu" }))
--- Keybind overlay - Shows important keybindings on screen
-oxwm.key.bind({ modkey, "Shift" }, "Slash", oxwm.show_keybinds())
-
--- Window state toggles
 oxwm.key.bind({ modkey, "Shift" }, "F", oxwm.client.toggle_fullscreen())
 oxwm.key.bind({ modkey, "Shift" }, "Space", oxwm.client.toggle_floating())
+oxwm.key.bind({ modkey }, "J", oxwm.client.focus_stack(1)) -- Focus up stack
+oxwm.key.bind({ modkey }, "K", oxwm.client.focus_stack(-1)) -- Focus down stack
+oxwm.key.bind({ modkey, "Shift" }, "J", oxwm.client.move_stack(1)) -- Move up stack
+oxwm.key.bind({ modkey, "Shift" }, "K", oxwm.client.move_stack(-1)) -- Move down stack
 
--- Layout management
+-- Layout
 oxwm.key.bind({ modkey }, "T", oxwm.layout.set("tiling"))
--- Cycle through layouts
 oxwm.key.bind({ modkey }, "N", oxwm.layout.cycle())
 
--- Master area controls (tiling layout)
+-- Master area (tiling)
+oxwm.key.bind({ modkey }, "H", oxwm.set_master_factor(-5)) -- Shrink master
+oxwm.key.bind({ modkey }, "L", oxwm.set_master_factor(5)) -- Grow master
+oxwm.key.bind({ modkey }, "I", oxwm.inc_num_master(1)) -- More masters
+oxwm.key.bind({ modkey }, "P", oxwm.inc_num_master(-1)) -- Fewer masters
 
--- Decrease/Increase master area width
-oxwm.key.bind({ modkey }, "H", oxwm.set_master_factor(-5))
-oxwm.key.bind({ modkey }, "L", oxwm.set_master_factor(5))
--- Increment/Decrement number of master windows
-oxwm.key.bind({ modkey }, "I", oxwm.inc_num_master(1))
-oxwm.key.bind({ modkey }, "P", oxwm.inc_num_master(-1))
-
--- Gaps toggle
+-- Gaps
 oxwm.key.bind({ modkey }, "A", oxwm.toggle_gaps())
 
--- Window manager controls
-oxwm.key.bind({ modkey, "Shift" }, "Q", oxwm.quit())
+-- WM controls
+oxwm.key.bind({ modkey, "Shift" }, "Q", oxwm.spawn({ "wlogout" }))
 oxwm.key.bind({ modkey, "Shift" }, "R", oxwm.restart())
+oxwm.key.bind({ modkey, "Shift" }, "Slash", oxwm.show_keybinds())
 
--- Focus movement [1 for up in the stack, -1 for down]
-oxwm.key.bind({ modkey }, "J", oxwm.client.focus_stack(1))
-oxwm.key.bind({ modkey }, "K", oxwm.client.focus_stack(-1))
+-- Multi-monitor
+oxwm.key.bind({ modkey }, "Comma", oxwm.monitor.focus(-1)) -- Focus prev monitor
+oxwm.key.bind({ modkey }, "Period", oxwm.monitor.focus(1)) -- Focus next monitor
+oxwm.key.bind({ modkey, "Shift" }, "Comma", oxwm.monitor.tag(-1)) -- Move win to prev monitor
+oxwm.key.bind({ modkey, "Shift" }, "Period", oxwm.monitor.tag(1)) -- Move win to next monitor
 
--- Window movement (swap position in stack)
-oxwm.key.bind({ modkey, "Shift" }, "J", oxwm.client.move_stack(1))
-oxwm.key.bind({ modkey, "Shift" }, "K", oxwm.client.move_stack(-1))
-
--- Multi-monitor support
-
--- Focus next/previous Monitors
-oxwm.key.bind({ modkey }, "Comma", oxwm.monitor.focus(-1))
-oxwm.key.bind({ modkey }, "Period", oxwm.monitor.focus(1))
--- Move window to next/previous Monitors
-oxwm.key.bind({ modkey, "Shift" }, "Comma", oxwm.monitor.tag(-1))
-oxwm.key.bind({ modkey, "Shift" }, "Period", oxwm.monitor.tag(1))
-
--- Workspace (tag) navigation
--- Switch to workspace N (tags are 0-indexed, so tag "1" is index 0)
+-- Workspace navigation (tags are 0-indexed)
 oxwm.key.bind({ modkey }, "1", oxwm.tag.view(0))
 oxwm.key.bind({ modkey }, "2", oxwm.tag.view(1))
 oxwm.key.bind({ modkey }, "3", oxwm.tag.view(2))
@@ -219,7 +186,7 @@ oxwm.key.bind({ modkey }, "7", oxwm.tag.view(6))
 oxwm.key.bind({ modkey }, "8", oxwm.tag.view(7))
 oxwm.key.bind({ modkey }, "9", oxwm.tag.view(8))
 
--- Move focused window to workspace N
+-- Move window to workspace
 oxwm.key.bind({ modkey, "Shift" }, "1", oxwm.tag.move_to(0))
 oxwm.key.bind({ modkey, "Shift" }, "2", oxwm.tag.move_to(1))
 oxwm.key.bind({ modkey, "Shift" }, "3", oxwm.tag.move_to(2))
@@ -230,8 +197,7 @@ oxwm.key.bind({ modkey, "Shift" }, "7", oxwm.tag.move_to(6))
 oxwm.key.bind({ modkey, "Shift" }, "8", oxwm.tag.move_to(7))
 oxwm.key.bind({ modkey, "Shift" }, "9", oxwm.tag.move_to(8))
 
--- Combo view (view multiple tags at once) {argos_nothing}
--- Example: Mod+Ctrl+2 while on tag 1 will show BOTH tags 1 and 2
+-- Combo view: show multiple tags at once (e.g. Mod+Ctrl+2 while on tag 1 = show both)
 oxwm.key.bind({ modkey, "Control" }, "1", oxwm.tag.toggleview(0))
 oxwm.key.bind({ modkey, "Control" }, "2", oxwm.tag.toggleview(1))
 oxwm.key.bind({ modkey, "Control" }, "3", oxwm.tag.toggleview(2))
@@ -242,8 +208,7 @@ oxwm.key.bind({ modkey, "Control" }, "7", oxwm.tag.toggleview(6))
 oxwm.key.bind({ modkey, "Control" }, "8", oxwm.tag.toggleview(7))
 oxwm.key.bind({ modkey, "Control" }, "9", oxwm.tag.toggleview(8))
 
--- Multi tag (window on multiple tags)
--- Example: Mod+Ctrl+Shift+2 puts focused window on BOTH current tag and tag 2
+-- Multi-tag: pin window to multiple tags (e.g. Mod+Ctrl+Shift+2 = current tag + tag 2)
 oxwm.key.bind({ modkey, "Control", "Shift" }, "1", oxwm.tag.toggletag(0))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "2", oxwm.tag.toggletag(1))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "3", oxwm.tag.toggletag(2))
@@ -254,48 +219,43 @@ oxwm.key.bind({ modkey, "Control", "Shift" }, "7", oxwm.tag.toggletag(6))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "8", oxwm.tag.toggletag(7))
 oxwm.key.bind({ modkey, "Control", "Shift" }, "9", oxwm.tag.toggletag(8))
 
-oxwm.key.bind({ modkey, "Control" }, "W", oxwm.spawn({ "wallmenu" }))
--------------------------------------------------------------------------------
----             Media Controls (PipeWire/WirePlumber)                       ---
--------------------------------------------------------------------------------
-
--- Volume Up
+-- Media controls (PipeWire/WirePlumber + playerctl)
 oxwm.key.bind({}, "XF86AudioRaiseVolume", oxwm.spawn({ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+" }))
-
--- Volume Down
 oxwm.key.bind({}, "XF86AudioLowerVolume", oxwm.spawn({ "wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-" }))
-
--- Mute
 oxwm.key.bind({}, "XF86AudioMute", oxwm.spawn({ "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle" }))
-
--- Play/Pause
 oxwm.key.bind({}, "XF86AudioPlay", oxwm.spawn({ "playerctl play-pause" }))
-
--- Stop
 oxwm.key.bind({}, "XF86AudioStop", oxwm.spawn({ "playerctl stop" }))
-
--- Next/Previous (Optional but handy)
 oxwm.key.bind({}, "XF86AudioNext", oxwm.spawn({ "playerctl next" }))
 oxwm.key.bind({}, "XF86AudioPrev", oxwm.spawn({ "playerctl previous" }))
 
 -------------------------------------------------------------------------------
 -- Keychords
 -------------------------------------------------------------------------------
+
 oxwm.key.chord({
-	{ { "Mod4" }, "Space" },
+	{ { modkey }, "Space" },
 	{ {}, "W" },
 }, oxwm.spawn({ "wallmenu" }))
 
 oxwm.key.chord({
-	{ { "Mod4" }, "Space" },
-	{ {}, "P" },
-}, oxwm.spawn({ "powermenu" }))
+	{ { modkey }, "Space" },
+	{ {}, "M" },
+}, oxwm.spawn({ "st termusic" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "C" },
+}, oxwm.spawn({ "kitty --class connect -e nmtui" }))
+
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "T" },
+}, oxwm.spawn({ "st -e tmux new -s tmux-btw" }))
 
 -------------------------------------------------------------------------------
 -- Autostart
 -------------------------------------------------------------------------------
--- Commands to run once when OXWM starts
--- Uncomment and modify these examples, or add your own
+
 oxwm.autostart("xset r rate 300 50")
 oxwm.autostart("picom")
 oxwm.autostart("xwallpaper --zoom ~/.local/share/current_wallpaper")

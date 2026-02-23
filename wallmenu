@@ -1,36 +1,48 @@
 #!/bin/bash
 
+# Directory where your wallpapers are stored (edit this to match your setup)
 WALL_DIR="$HOME/dotfiles/oxwm-dotfile/walls"
-CONFIG_FILE="$HOME/.config/oxwm/config.lua"
-THEME_DIR="$HOME/.config/oxwm/" # Adjust this to where your lua files live
 
+# Path to OXWM's main config file (used to swap the color theme)
+CONFIG_FILE="$HOME/.config/oxwm/config.lua"
+
+# Directory where your theme .lua files live
+THEME_DIR="$HOME/.config/oxwm/"
+
+# Build a list of wallpapers with their thumbnails for rofi to display
 LIST=""
 while IFS= read -r file; do
   LIST+="${file}\0icon\x1f${WALL_DIR}/${file}\n"
 done < <(find "$WALL_DIR" -mindepth 2 -type f -printf "%P\n")
 
+# Launch rofi as a visual grid wallpaper picker
 SELECTION=$(echo -e "$LIST" | rofi -dmenu -i -p "Environment Control" \
   -show-icons \
   -theme-str 'window { width: 50%; } listview { columns: 3; lines: 3; } element { orientation: vertical; } element-icon { size: 150px; } element-text { horizontal-align: 0.5; }')
 
 if [ -n "$SELECTION" ]; then
+  # Extract the folder name from the selection path and use it as the theme name
   DIR_NAME=$(echo "$SELECTION" | cut -d'/' -f1)
 
+  # Check if a matching .lua theme file exists, otherwise fall back to "other"
   if [ -f "$THEME_DIR/${DIR_NAME,,}.lua" ]; then
     THEME="${DIR_NAME,,}"
   else
     THEME="other"
   fi
 
+  # Set the selected wallpaper via a symlink and apply it
   ln -sf "$WALL_DIR/$SELECTION" "$HOME/.local/share/current_wallpaper"
   xwallpaper --zoom "$HOME/.local/share/current_wallpaper"
 
   if [ -f "$CONFIG_FILE" ]; then
+    # Swap the theme name in config.lua to match the selected wallpaper's folder
     sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
 
-    # Reload OXWM
+    # Hot reload OXWM if it's running
     pgrep oxwm && xdotool key super+shift+r
 
+    # Send a notification with the wallpaper thumbnail
     notify-send -i "$WALL_DIR/$SELECTION" "OXWM System Update" "Switched to $THEME environment"
   fi
 fi
