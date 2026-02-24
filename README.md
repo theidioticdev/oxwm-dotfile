@@ -61,9 +61,9 @@ zig lua libx11 libxft freetype2 fontconfig libxinerama
 git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
-# Backup existing config if you have one
-mv ~/.config/oxwm /path/to/backup  # replace this with an actual directory
-mv ~/.config/fastfetch/config.jsonc /path/to/backup  # replace this with an actual directory
+# Backup existing config if it exists (prevents errors if folder is missing)
+[ -d ~/.config/oxwm ] && mv ~/.config/oxwm ~/.config/oxwm_backup
+[ d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
 
 # Copy config
 cp -r ./oxwm ~/.config/
