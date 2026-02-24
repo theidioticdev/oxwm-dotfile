@@ -49,7 +49,7 @@ yay -S oxwm-git
 
 OR (if you do not want to run scripts)
 # replace yay with paru if you want
-yay -S kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
+yay -S alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
 xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-iosevka-nerd \
 zig lua libx11 libxft freetype2 fontconfig libxinerama
 ```
