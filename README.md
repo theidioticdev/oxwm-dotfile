@@ -74,6 +74,10 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 
 # Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
+nano wallmenu
+
+# After you finish
+
 chmod +x wallmenu
 sudo cp wallmenu /usr/local/bin/
 
