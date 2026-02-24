@@ -49,9 +49,85 @@ yay -S oxwm-git
 
 OR (if you do not want to run scripts)
 # replace yay with paru if you want
-yay -S kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
+yay -S alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
 xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-iosevka-nerd \
 zig lua libx11 libxft freetype2 fontconfig libxinerama
+```
+
+```bash
+# ─── Debian-based (Ubuntu, Mint, etc.) ───────────────────────────────────────
+
+# Add Brave repo first (it's not in apt by default)
+sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
+  https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
+  https://brave-browser-apt-release.s3.brave.com/ stable main" \
+  | sudo tee /etc/apt/sources.list.d/brave-browser.list
+sudo apt update
+
+# Install dependencies
+sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar xwallpaper dunst network-manager-gnome wireplumber gawk \
+  fonts-iosevka-nerd zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
+  libfontconfig1-dev libxinerama-dev
+
+# Note: fonts-iosevka-nerd may not be available on older Debian/Ubuntu releases.
+# If it's not found, grab the Iosevka Nerd Font manually:
+# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
+# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+
+# Zig is not in Debian repos, install it manually (if you use snaps):
+sudo snap install zig --classic --beta
+
+# OR grab it directly from ziglang.org (more control over version):
+wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
+tar -xf zig-linux-x86_64-0.15.2.tar.xz
+sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc
+source ~/.bashrc
+```
+
+```bash
+# ─── Fedora / RHEL-based (Fedora, Rocky, Alma, etc.) ─────────────────────────
+
+# Add Brave repo first
+sudo dnf install -y dnf-plugins-core
+sudo dnf config-manager --add-repo \
+  https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+
+# Install dependencies
+sudo dnf install -y alacritty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar xwallpaper dunst NetworkManager-tui wireplumber gawk \
+  zig lua libX11-devel libXft-devel freetype-devel \
+  fontconfig-devel libXinerama-devel
+
+# Grab Iosevka Nerd Font manually (not in Fedora repos):
+# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
+# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+
+# Note: alacritty may need cargo/rust if not in your Fedora version's repos.
+# Fallback: sudo dnf install -y cargo && cargo install alacritty
+```
+
+```bash
+# ─── OpenSUSE Tumbleweed ──────────────────────────────────────────────────────
+
+# Add Brave repo first
+sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+sudo zypper addrepo \
+  https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo zypper refresh
+
+# Install dependencies
+sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar xwallpaper dunst NetworkManager network-manager-applet \
+  wireplumber gawk zig lua54 libX11-devel libXft-devel freetype2-devel \
+  fontconfig-devel libXinerama-devel
+
+# Grab Iosevka Nerd Font manually (package name is inconsistent across repos):
+# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
+# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
 ```
 
 ### Installing the Config
@@ -142,6 +218,7 @@ After making changes, press `Super + Shift + R` to reload without restarting X.
 
 - **OXWM** by [Tonybtw](https://github.com/tonybanters/oxwm)
 - **Tokyo Night, Nord, and Gruvbox .lua files** adapted from Tony's config
+
 ## Contributing
 
 Feel free to fork this and adapt it to your needs. If you have suggestions or improvements, open an issue or PR!
