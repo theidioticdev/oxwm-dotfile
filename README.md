@@ -28,7 +28,7 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 
 ## Features
 
-- **Status bar** with kernel info, RAM usage, battery, volume, keyboard layout, and date/time
+- **Status bar** with kernel info, RAM usage, battery, volume, storage usage, and date/time
 - **Workspace tags** using nerd font icons instead of numbers
 - **Keychords** for advanced keybinds (Mod+Space + key combos)
 - **Window rules** for auto-tagging apps to specific workspaces
@@ -137,9 +137,9 @@ sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
 git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
-# Backup existing config if you have one
-mv ~/.config/oxwm /path/to/backup  # replace this with an actual directory
-mv ~/.config/fastfetch/config.jsonc /path/to/backup  # replace this with an actual directory
+# Backup existing config if it exists (prevents errors if folder is missing)
+[ -d ~/.config/oxwm ] && mv ~/.config/oxwm ~/.config/oxwm_backup
+[ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
 
 # Copy config
 cp -r ./oxwm ~/.config/
@@ -150,7 +150,11 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 
 # Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
-sudo cp powermenu /usr/local/bin
+nano wallmenu
+
+# After you finish
+
+chmod +x wallmenu
 sudo cp wallmenu /usr/local/bin/
 
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
@@ -182,7 +186,7 @@ sudo cp wallmenu /usr/local/bin/
 
 | Sequence | Action |
 |----------|--------|
-| `Super + Space` → `M` | Spawn Termusic (using st) |
+| `Super + Space` → `M` | Spawn Termusic (using st, replace it with alacritty -e if you want) |
 | `Super + Space` → `W` | Spawn Wallpaper/Theme Changer |
 | `Super + Space` → `C` | Spawn NMTUI using kitty |
 | `Super + Space` → `T` | Spawn a tmux session named "tmuxbtw" |
