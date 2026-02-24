@@ -28,7 +28,7 @@ Check out the [official repo](https://github.com/tonybanters/oxwm) for more info
 
 ## Features
 
-- **Status bar** with kernel info, RAM usage, battery, volume, keyboard layout, and date/time
+- **Status bar** with kernel info, RAM usage, battery, volume, storage usage, and date/time
 - **Workspace tags** using nerd font icons instead of numbers
 - **Keychords** for advanced keybinds (Mod+Space + key combos)
 - **Window rules** for auto-tagging apps to specific workspaces
