@@ -74,6 +74,7 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 
 # Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
+chmod +x wallmenu
 sudo cp wallmenu /usr/local/bin/
 
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
@@ -105,7 +106,7 @@ sudo cp wallmenu /usr/local/bin/
 
 | Sequence | Action |
 |----------|--------|
-| `Super + Space` → `M` | Spawn Termusic (using st) |
+| `Super + Space` → `M` | Spawn Termusic (using st, replace it with alacritty -e if you want) |
 | `Super + Space` → `W` | Spawn Wallpaper/Theme Changer |
 | `Super + Space` → `C` | Spawn NMTUI using kitty |
 | `Super + Space` → `T` | Spawn a tmux session named "tmuxbtw" |
