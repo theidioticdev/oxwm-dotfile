@@ -63,7 +63,7 @@ cd oxwm-dotfile
 
 # Backup existing config if it exists (prevents errors if folder is missing)
 [ -d ~/.config/oxwm ] && mv ~/.config/oxwm ~/.config/oxwm_backup
-[ d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
+[ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
 
 # Copy config
 cp -r ./oxwm ~/.config/
