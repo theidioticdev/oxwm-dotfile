@@ -74,7 +74,6 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 
 # Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
-sudo cp powermenu /usr/local/bin
 sudo cp wallmenu /usr/local/bin/
 
 # you do not need to use my wallpapers, if you have your set of walls, you can use them too
