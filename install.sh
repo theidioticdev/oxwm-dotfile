@@ -20,12 +20,13 @@ fi
 sudo -v
 
 echo -e "${BLUE}Starting TheIdioticdev's OXWM dotfile Dependency Installer for Arch-based systems...${NC}"
-echo -e "${BLUE}Reminder: This script only handles official repos. Make sure to install 'oxwm-git' and 'brave-bin' via your AUR helper (yay/paru).${NC}"
+echo -e "${BLUE}Note: I use yay for this installer, make sure to have it (or edit this file to use paru instead) ${NC}"
 PKGS=(
   "alacritty" "rofi" "flameshot" "xclip" "playerctl"
   "blueman" "thunar" "xwallpaper" "dunst" "network-manager-applet"
   "wireplumber" "xorg-setxkbmap" "gawk" "ttf-iosevka-nerd" "pipewire"
   "zig" "lua" "libx11" "libxft" "freetype2" "fontconfig" "libxinerama"
+  "picom" "betterlockscreen" "oxwm-git" "brave-bin"
 )
 
 MISSING_PKGS=()
@@ -45,5 +46,5 @@ if [ ${#MISSING_PKGS[@]} -eq 0 ]; then
   echo "Everything is already installed! You're good to go."
 else
   echo "Installing missing dependencies: ${MISSING_PKGS[*]}"
-  sudo pacman -S --needed "${MISSING_PKGS[@]}"
+  yay -S --needed "${MISSING_PKGS[@]}"
 fi
