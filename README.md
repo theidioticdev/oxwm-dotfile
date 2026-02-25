@@ -1,232 +1,298 @@
 # OXWM Dotfile
 
+my personal OXWM + fastfetch setup. steal it, fork it, whatever — just don't blame me if something breaks lol
 
-My personal OXWM + fastfetch configs, feel free to try it out!
+---
 
-![Screenshot](screenshot.png)
-![Screenshot](floatingwindows.png)
+## Screenshots
 
-## What is OXWM?
+![Desktop](screenshot.png)
+![Floating Windows](floatingwindows.png)
 
-OXWM is a dynamic window manager written in Zig, inspired by dwm but with modern improvements:
-- Lua configuration with hot-reload (no recompiling!)
-- LSP support for config autocomplete
-- Keychord support for advanced keybindings
-- Built-in status bar
-- Multi-monitor support
+---
 
-Check out the [official repo](https://github.com/tonybanters/oxwm) for more info.
+## What even is OXWM?
 
-## My Setup (for reference)
+it's a dynamic window manager written in Zig, basically dwm but actually bearable to configure. no more recompiling C every time you wanna change a keybind fr
 
-- **OS**: CachyOS
-- **Terminal**: Alacritty
-- **Launcher**: Rofi
-- **Browser**: Brave
-- **Font**: Iosevka Mono Nerd Font
-- **Themes included**: Catppuccin Mocha, Gruvbox, Tokyo Night, Nord, Oxocarbon
+- **Lua config with hot-reload** — `Super + Shift + R` and you're done, no recompile needed
+- **LSP support** — autocomplete in your config file like a normal person
+- **Keychord support** — vim-style multi-key bindings
+- **Built-in status bar** — no need for polybar or lemonbar
+- **Multi-monitor support** — it just works
 
-## Features
+→ [official repo](https://github.com/tonybanters/oxwm)
 
-- **Status bar** with kernel info, RAM usage, battery, volume, storage usage, and date/time
-- **Workspace tags** using nerd font icons instead of numbers
-- **Keychords** for advanced keybinds (Mod+Space + key combos)
-- **Window rules** for auto-tagging apps to specific workspaces
-- **Dual keyboard layout** (US/Arabic) with Alt+Shift toggle
-- **Media controls** for PipeWire/WirePlumber
-- **Modular config** with separate color scheme file
+---
+
+## My Setup
+
+| thing | what i use |
+|-------|------------|
+| OS | CachyOS |
+| Terminal | Alacritty (alt: Kitty) |
+| Launcher | Rofi + dmenu |
+| Browser | Brave |
+| Font | Iosevka Nerd Font Propo |
+| Themes | Catppuccin Mocha, Gruvbox, Tokyo Night, Nord, Oxocarbon |
+
+---
+
+## What's in the bar
+
+the status bar shows: kernel version · RAM usage · volume · date/time · keyboard layout · battery · disk usage
+
+all color-coded and underlined per block, each one has its own update interval so it's not killing your CPU
+
+---
 
 ## Installation
 
-### Dependencies
+### Step 1 — Install Dependencies
+
+pick your distro:
+
+<details>
+<summary>Arch / CachyOS (recommended tbh)</summary>
 
 ```bash
-# Installing OXWM on Arch-based distros (NixOS tutorial in OXWM's official repo, any other distro can compile it from source)
-yay -S oxwm-git
-
-# Dependencies installer
-./install.sh 
-
-OR (if you do not want to run scripts)
-# replace yay with paru if you want
-yay -S alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
-xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk ttf-iosevka-nerd \
-zig lua libx11 libxft freetype2 fontconfig libxinerama
+bash <(wget -qO- https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
 ```
 
-```bash
-# ─── Debian-based (Ubuntu, Mint, etc.) ───────────────────────────────────────
+or with curl:
 
-# Add Brave repo first (it's not in apt by default)
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
+```
+
+or manually with yay/paru:
+
+```bash
+yay -S oxwm-git alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
+  xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk \
+  ttf-iosevka-nerd zig lua libx11 libxft freetype2 fontconfig libxinerama
+```
+
+</details>
+
+<details>
+<summary>Debian / Ubuntu / Mint</summary>
+
+```bash
+# Add Brave repo
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
   https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
+
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
   https://brave-browser-apt-release.s3.brave.com/ stable main" \
   | sudo tee /etc/apt/sources.list.d/brave-browser.list
+
 sudo apt update
 
-# Install dependencies
+# Install everything
 sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst network-manager-gnome wireplumber gawk \
   fonts-iosevka-nerd zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
-
-# Note: fonts-iosevka-nerd may not be available on older Debian/Ubuntu releases.
-# If it's not found, grab the Iosevka Nerd Font manually:
-# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
-# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-
-# Zig is not in Debian repos, install it manually (if you use snaps):
-sudo snap install zig --classic --beta
-
-# OR grab it directly from ziglang.org (more control over version):
-wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
-tar -xf zig-linux-x86_64-0.15.2.tar.xz
-sudo mv zig-linux-x86_64-0.15.2 /opt/zig
-echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc
-source ~/.bashrc
 ```
 
-```bash
-# ─── Fedora / RHEL-based (Fedora, Rocky, Alma, etc.) ─────────────────────────
+> **heads up:** `fonts-iosevka-nerd` might not exist on older releases. grab it manually from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip), then:
+> ```bash
+> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> ```
 
-# Add Brave repo first
+> **zig not in apt?** either use snap: `sudo snap install zig --classic --beta`
+> or grab it directly:
+> ```bash
+> wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
+> tar -xf zig-linux-x86_64-0.15.2.tar.xz
+> sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+> echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
+> ```
+
+</details>
+
+<details>
+<summary>Fedora / RHEL / Rocky / Alma</summary>
+
+```bash
+# Add Brave repo
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo \
   https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 
-# Install dependencies
+# Install everything
 sudo dnf install -y alacritty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst NetworkManager-tui wireplumber gawk \
-  zig lua libX11-devel libXft-devel freetype-devel \
-  fontconfig-devel libXinerama-devel
-
-# Grab Iosevka Nerd Font manually (not in Fedora repos):
-# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
-# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-
-# Note: alacritty may need cargo/rust if not in your Fedora version's repos.
-# Fallback: sudo dnf install -y cargo && cargo install alacritty
+  zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
-```bash
-# ─── OpenSUSE Tumbleweed ──────────────────────────────────────────────────────
+> **Iosevka Nerd Font** isn't in Fedora repos — grab it from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip)
 
-# Add Brave repo first
+> **alacritty missing?** fallback: `sudo dnf install -y cargo && cargo install alacritty`
+
+</details>
+
+<details>
+<summary>openSUSE Tumbleweed</summary>
+
+```bash
+# Add Brave repo
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
-sudo zypper addrepo \
-  https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
+sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 sudo zypper refresh
 
-# Install dependencies
+# Install everything
 sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst NetworkManager network-manager-applet \
   wireplumber gawk zig lua54 libX11-devel libXft-devel freetype2-devel \
   fontconfig-devel libXinerama-devel
-
-# Grab Iosevka Nerd Font manually (package name is inconsistent across repos):
-# https://github.com/ryanoasis/nerd-fonts/releases (download IosevkaTerm.zip)
-# Then: mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
 ```
 
-### Installing the Config
+> **Iosevka Nerd Font** — grab it from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip)
+
+</details>
+
+---
+
+### Step 2 — Install the Config
 
 ```bash
-# Clone this repo
+# Clone the repo
 git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
-# Backup existing config if it exists (prevents errors if folder is missing)
+# Backup existing configs (safe to run even if they don't exist)
 [ -d ~/.config/oxwm ] && mv ~/.config/oxwm ~/.config/oxwm_backup
 [ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
 
-# Copy config
+# Copy configs
 cp -r ./oxwm ~/.config/
-cp -r ./fastfetch ~/.config
+cp -r ./fastfetch ~/.config/
 
-# Copy wallpaper (adjust path as needed)
-mkdir -p ~/dotfiles/  
+# Copy wallpapers
+mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
-
-# Before the next step, I recommend editing wallmenu so you can tweak the wallpaper directories
-nano wallmenu
-
-# After you finish
-
-chmod +x wallmenu
-sudo cp wallmenu /usr/local/bin/
-
-# you do not need to use my wallpapers, if you have your set of walls, you can use them too
-# Click Super + Shift + R to hot reload the config
 ```
 
-## Usage
+> **before the next step** — edit `wallmenu` to point at your wallpaper directories:
+> ```bash
+> nano wallmenu
+> ```
 
-### Default Keybindings
+```bash
+# Make wallmenu executable and install it
+chmod +x wallmenu
+sudo cp wallmenu /usr/local/bin/
+```
 
-| Keybind | Action |
-|---------|--------|
-| `Super + Q` | Spawn terminal |
-| `Super + D` | Launch Rofi |
-| `Super + C` | Kill focused window |
-| `Super + Shift + Q` | Quit OXWM |
-| `Super + Shift + R` | Hot reload config |
-| `Super + 1-9` | Switch to workspace 1-9 |
-| `Super + Shift + 1-9` | Move window to workspace 1-9 |
-| `Super + J/K` | Focus next/previous window |
-| `Super + H/L` | Decrease/increase master area |
-| `Super + A` | Toggle gaps |
-| `Super + Shift + F` | Toggle fullscreen |
-| `Prt Sc` | Screenshot (Flameshot) |
-| `Super + Shift + /` | Show keybind overlay |
-| `Alt + Shift` | Change keyboard layout | 
+you don't have to use my wallpapers btw, any folder works — just tweak the paths in `wallmenu`
 
-### Keychords
+---
 
-| Sequence | Action |
-|----------|--------|
-| `Super + Space` → `M` | Spawn Termusic (using st, replace it with alacritty -e if you want) |
-| `Super + Space` → `W` | Spawn Wallpaper/Theme Changer |
-| `Super + Space` → `C` | Spawn NMTUI using kitty |
-| `Super + Space` → `T` | Spawn a tmux session named "tmuxbtw" |
+## Keybindings
 
-### Media Keys
+### everyday stuff
 
-Standard media keys work for volume, play/pause, next/previous track.
+| keybind | what it does |
+|---------|--------------|
+| `Super + Q` | open terminal (Alacritty) |
+| `Super + Shift + T` | open alt terminal (Kitty) |
+| `Super + D` | Rofi launcher |
+| `Super + Shift + D` | dmenu (actually useful paired with rofi) |
+| `Super + B` | open Brave |
+| `Super + Shift + B` | Bluetooth manager |
+| `Super + E` | file manager (Thunar) |
+| `Super + V` | VLC |
+| `Print` | screenshot via Flameshot |
+| `Super + C` | kill focused window |
+| `Super + Shift + Q` | quit OXWM |
+| `Super + Shift + R` | **hot reload config** ← use this constantly |
+| `Super + Shift + /` | show keybind overlay |
+| `Alt + Shift` | toggle keyboard layout (US / Arabic) |
+
+### window & layout
+
+| keybind | what it does |
+|---------|--------------|
+| `Super + J / K` | focus up / down the stack |
+| `Super + Shift + J / K` | move window up / down the stack |
+| `Super + H / L` | shrink / grow master area |
+| `Super + I / P` | more / fewer master windows |
+| `Super + T` | set tiling layout |
+| `Super + N` | cycle through layouts |
+| `Super + S / Shift+S` | scroll layout left / right |
+| `Super + A` | toggle gaps |
+| `Super + Shift + F` | toggle fullscreen |
+| `Super + Shift + Space` | toggle floating |
+| `Super + Shift + L` | lock screen |
+
+### workspaces
+
+| keybind | what it does |
+|---------|--------------|
+| `Super + 1-9` | switch to workspace |
+| `Super + Shift + 1-9` | move window to workspace |
+| `Super + Ctrl + 1-9` | toggle-view multiple workspaces at once |
+| `Super + Ctrl + Shift + 1-9` | pin window to multiple workspaces |
+
+### multi-monitor
+
+| keybind | what it does |
+|---------|--------------|
+| `Super + ,` / `Super + .` | focus prev / next monitor |
+| `Super + Shift + ,` / `Super + Shift + .` | move window to prev / next monitor |
+
+### keychords (Super + Space → key)
+
+| sequence | what it does |
+|----------|--------------|
+| `Super + Space` → `W` | wallpaper / theme changer |
+| `Super + Space` → `M` | Termusic (music player) |
+| `Super + Space` → `C` | NMTUI network manager (in Kitty) |
+| `Super + Space` → `T` | new tmux session named "tmux-btw" |
+| `Super + Space` → `S` | Telegram |
+
+### media keys
+
+volume up/down/mute + play/pause/next/prev all work out of the box via PipeWire/WirePlumber + playerctl
+
+---
 
 ## Customization
 
-The config is located at `~/.config/oxwm/config.lua`.
+config lives at `~/.config/oxwm/config.lua` — edit it, hit `Super + Shift + R`, done
 
-### Changing Colors
-I included tonybanters' preset color scheme .lua files (tokyonight, gruvbox and nord)
-Replace the scheme included in the dotfiles with your own color scheme file if you want.
-for example:
+### switching color schemes
+
+5 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`
+
+change this one line in the config:
+
 ```lua
-local theme_name = "nord"
-local colors = require(theme_name)
+local theme_name = "nord" -- swap this out
 ```
 
-### Adding Keybinds
+### adding keybinds
 
 ```lua
 oxwm.key.bind({ modkey }, "YourKey", oxwm.spawn({ "your-command" }))
 ```
 
-### Hot Reload
+### adding window rules
 
-After making changes, press `Super + Shift + R` to reload without restarting X.
+```lua
+oxwm.rule.add({ instance = "your-app", tag = 3 })          -- auto-send to workspace 3
+oxwm.rule.add({ instance = "your-app", floating = true })  -- always float
+```
 
-## Credits
-
-- **OXWM** by [Tonybtw](https://github.com/tonybanters/oxwm)
-- **Tokyo Night, Nord, and Gruvbox .lua files** adapted from Tony's config
+---
 
 ## Contributing
 
-Feel free to fork this and adapt it to your needs. If you have suggestions or improvements, open an issue or PR!
+fork it, break it, make it yours. issues and PRs are welcome if you've got something good
 
 ## License
 
-This config is provided as-is. Do whatever you want with it.
+do whatever you want with it lol
