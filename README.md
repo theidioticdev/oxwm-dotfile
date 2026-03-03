@@ -50,7 +50,6 @@ all color-coded and underlined per block, each one has its own update interval s
 
 ### Step 1 — Install Dependencies
 
-pick your distro:
 
 <details>
 <summary>Arch / CachyOS (recommended tbh)</summary>
