@@ -1,6 +1,6 @@
 # OXWM Dotfile
 
-my personal OXWM + fastfetch setup. steal it, fork it, whatever — just don't blame me if something breaks lol
+my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever — just don't blame me if something breaks lol
 
 ---
 
@@ -50,26 +50,25 @@ all color-coded and underlined per block, each one has its own update interval s
 
 ### Step 1 — Install Dependencies
 
-
 <details>
-<summary>Arch / CachyOS (recommended tbh)</summary>
+<summary>Arch / CachyOS (recommended)</summary>
 
+**One-liner:**
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
 ```
 
 or with curl:
-
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
 ```
 
-or manually with yay/paru:
-
+or manually:
 ```bash
 yay -S oxwm-git alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
   xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk \
-  ttf-iosevka-nerd zig lua libx11 libxft freetype2 fontconfig libxinerama
+  ttf-iosevka-nerd picom betterlockscreen zig lua libx11 libxft freetype2 \
+  fontconfig libxinerama
 ```
 
 </details>
@@ -77,8 +76,8 @@ yay -S oxwm-git alacritty brave-bin rofi flameshot xclip playerctl blueman thuna
 <details>
 <summary>Debian / Ubuntu / Mint</summary>
 
+**Add the Brave repo:**
 ```bash
-# Add Brave repo
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
   https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
 
@@ -87,20 +86,30 @@ echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=
   | sudo tee /etc/apt/sources.list.d/brave-browser.list
 
 sudo apt update
+```
 
-# Install everything
+**Install everything:**
+```bash
 sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst network-manager-gnome wireplumber gawk \
+  blueman thunar xwallpaper dunst network-manager-gnome wireplumber gawk picom \
   fonts-iosevka-nerd zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
 ```
 
-> **heads up:** `fonts-iosevka-nerd` might not exist on older releases. grab it manually from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip), then:
+**Install betterlockscreen manually** (not in apt repos):
+```bash
+wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+```
+
+> **Iosevka Nerd Font not in your repos?** Grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
 > ```bash
 > mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
 > ```
 
-> **zig not in apt?** either use snap: `sudo snap install zig --classic --beta`
+> **Zig not in apt?** Either use snap:
+> ```bash
+> sudo snap install zig --classic --beta
+> ```
 > or grab it directly:
 > ```bash
 > wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
@@ -114,42 +123,65 @@ sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
 <details>
 <summary>Fedora / RHEL / Rocky / Alma</summary>
 
+**Add the Brave repo:**
 ```bash
-# Add Brave repo
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo \
   https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
+```
 
-# Install everything
+**Install everything:**
+```bash
 sudo dnf install -y alacritty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst NetworkManager-tui wireplumber gawk \
+  blueman thunar xwallpaper dunst NetworkManager-tui wireplumber gawk picom \
   zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
-> **Iosevka Nerd Font** isn't in Fedora repos — grab it from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip)
+**Install betterlockscreen manually** (not in Fedora repos):
+```bash
+wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+```
 
-> **alacritty missing?** fallback: `sudo dnf install -y cargo && cargo install alacritty`
+> **Iosevka Nerd Font** isn't in Fedora repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+> ```bash
+> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> ```
+
+> **Alacritty missing?** Fall back to:
+> ```bash
+> sudo dnf install -y cargo && cargo install alacritty
+> ```
 
 </details>
 
 <details>
 <summary>openSUSE Tumbleweed</summary>
 
+**Add the Brave repo:**
 ```bash
-# Add Brave repo
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
 sudo zypper refresh
+```
 
-# Install everything
+**Install everything:**
+```bash
 sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst NetworkManager network-manager-applet \
-  wireplumber gawk zig lua54 libX11-devel libXft-devel freetype2-devel \
+  wireplumber gawk picom zig lua54 libX11-devel libXft-devel freetype2-devel \
   fontconfig-devel libXinerama-devel
 ```
 
-> **Iosevka Nerd Font** — grab it from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) (IosevkaTerm.zip)
+**Install betterlockscreen manually** (not in openSUSE repos):
+```bash
+wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+```
+
+> **Iosevka Nerd Font** isn't in openSUSE repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+> ```bash
+> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> ```
 
 </details>
 
@@ -162,9 +194,10 @@ sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
 git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
-# Backup existing configs (safe to run even if they don't exist)
-[ -d ~/.config/oxwm ] && mv ~/.config/oxwm ~/.config/oxwm_backup
-[ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch ~/.config/fastfetch_backup
+# Back up existing configs (safe to run even if they don't exist)
+[ -d ~/.config/oxwm ]      && mv ~/.config/oxwm      ~/.config/oxwm_backup
+[ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch  ~/.config/fastfetch_backup
+[ -f ~/.bashrc ]           && mv ~/.bashrc             ~/.bashrc_backup
 
 # Copy configs
 cp -r ./oxwm ~/.config/
@@ -175,18 +208,18 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 ```
 
-> **before the next step** — edit `wallmenu` to point at your wallpaper directories:
+> **Before the next step** — edit `wallmenu` to point at your wallpaper directories:
 > ```bash
 > nano wallmenu
 > ```
 
 ```bash
-# Make wallmenu executable and install it
+# Make wallmenu executable and move it to PATH
 chmod +x wallmenu
 sudo cp wallmenu /usr/local/bin/
 ```
 
-you don't have to use my wallpapers btw, any folder works — just tweak the paths in `wallmenu`
+You don't have to use the included wallpapers — any folder works, just update the paths in `wallmenu`.
 
 ---
 
@@ -249,7 +282,7 @@ you don't have to use my wallpapers btw, any folder works — just tweak the pat
 |----------|--------------|
 | `Super + Space` → `W` | wallpaper / theme changer |
 | `Super + Space` → `M` | Termusic (music player) |
-| `Super + Space` → `C` | NMTUI network manager (in Kitty) |
+| `Super + Space` → `C` | NMTUI (TUI-based NetworkManager program) |
 | `Super + Space` → `T` | new tmux session named "tmux-btw" |
 | `Super + Space` → `S` | Telegram |
 
@@ -265,7 +298,7 @@ config lives at `~/.config/oxwm/config.lua` — edit it, hit `Super + Shift + R`
 
 ### switching color schemes
 
-5 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`
+6 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, and `Wallpaper Agnostic (other)`
 
 change this one line in the config:
 
@@ -282,8 +315,13 @@ oxwm.key.bind({ modkey }, "YourKey", oxwm.spawn({ "your-command" }))
 ### adding window rules
 
 ```lua
-oxwm.rule.add({ instance = "your-app", tag = 3 })          -- auto-send to workspace 3
+oxwm.rule.add({ instance = "your-app", tag = 3 })         -- auto-send to workspace 3
 oxwm.rule.add({ instance = "your-app", floating = true })  -- always float
+```
+
+```bash
+# to find the WM class of an app for use in rules:
+xprop WM_CLASS
 ```
 
 ---
