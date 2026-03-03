@@ -30,7 +30,7 @@ it's a dynamic window manager written in Zig, basically dwm but actually bearabl
 | thing | what i use |
 |-------|------------|
 | OS | CachyOS |
-| Terminal | Alacritty (alt: Kitty) |
+| Terminal | Kitty (alt: Alacritty) |
 | Launcher | Rofi + dmenu |
 | Browser | Brave |
 | Font | Iosevka Nerd Font Propo |
