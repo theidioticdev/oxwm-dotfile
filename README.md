@@ -30,17 +30,21 @@ it's a dynamic window manager written in Zig, basically dwm but actually bearabl
 | thing | what i use |
 |-------|------------|
 | OS | CachyOS |
-| Terminal | Kitty (alt: Alacritty) |
-| Launcher | Rofi + dmenu |
+| Terminal | Kitty |
+| Launcher | Rofi |
 | Browser | Brave |
-| Font | Iosevka Nerd Font Propo |
+| Editor | Neovim (with Micro for quick edits) |
+| Font | Iosevka Nerd Font Propo Bold 12 |
+| Music | Termusic (TUI) |
+| Compositor | Picom |
+| Notifications | Dunst |
 | Themes | Catppuccin Mocha, Gruvbox, Tokyo Night, Nord, Oxocarbon |
 
 ---
 
 ## What's in the bar
 
-the status bar shows: kernel version · RAM usage · volume · date/time · keyboard layout · battery · disk usage
+the status bar shows: kernel version · RAM usage · date/time · battery · disk usage
 
 all color-coded and underlined per block, each one has its own update interval so it's not killing your CPU
 
@@ -65,10 +69,10 @@ bash <(curl -fsSL https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/m
 
 or manually:
 ```bash
-yay -S oxwm-git alacritty brave-bin rofi flameshot xclip playerctl blueman thunar \
+yay -S oxwm-git kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
   xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk \
   ttf-iosevka-nerd picom betterlockscreen zig lua libx11 libxft freetype2 \
-  fontconfig libxinerama
+  fontconfig libxinerama termusic
 ```
 
 </details>
@@ -90,8 +94,8 @@ sudo apt update
 
 **Install everything:**
 ```bash
-sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst network-manager-gnome wireplumber gawk picom \
+sudo apt install -y kitty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar xwallpaper dunst network-manager-applet wireplumber gawk picom \
   fonts-iosevka-nerd zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
 ```
@@ -100,6 +104,16 @@ sudo apt install -y alacritty brave-browser rofi flameshot xclip playerctl \
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
+
+**Install termusic manually** (not in apt repos):
+```bash
+cargo install termusic
+```
+
+> **Kitty not in your repos?** Grab it directly:
+> ```bash
+> curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
+> ```
 
 > **Iosevka Nerd Font not in your repos?** Grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
 > ```bash
@@ -133,8 +147,8 @@ sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 
 **Install everything:**
 ```bash
-sudo dnf install -y alacritty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst NetworkManager-tui wireplumber gawk picom \
+sudo dnf install -y kitty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar dunst NetworkManager-tui wireplumber gawk picom \
   zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
@@ -143,14 +157,21 @@ sudo dnf install -y alacritty brave-browser rofi flameshot xclip playerctl \
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
+**Install termusic manually** (not in Fedora repos):
+```bash
+cargo install termusic
+```
+
+> **xwallpaper is not in Fedora's repos** — build it from source:
+> ```bash
+> sudo dnf install -y libX11-devel libXft-devel imlib2-devel
+> git clone https://github.com/stoeckmann/xwallpaper
+> cd xwallpaper && ./autogen.sh && ./configure && make && sudo make install
+> ```
+
 > **Iosevka Nerd Font** isn't in Fedora repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
 > ```bash
 > mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-> ```
-
-> **Alacritty missing?** Fall back to:
-> ```bash
-> sudo dnf install -y cargo && cargo install alacritty
 > ```
 
 </details>
@@ -165,17 +186,28 @@ sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/brave-browser
 sudo zypper refresh
 ```
 
+**Add the X11:XOrg repo (needed for picom):**
+```bash
+sudo zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Tumbleweed/X11:XOrg.repo
+sudo zypper refresh
+```
+
 **Install everything:**
 ```bash
-sudo zypper install -y alacritty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst NetworkManager network-manager-applet \
-  wireplumber gawk picom zig lua54 libX11-devel libXft-devel freetype2-devel \
+sudo zypper install -y kitty brave-browser rofi flameshot xclip playerctl \
+  blueman thunar xwallpaper dunst NetworkManager-applet \
+  wireplumber gawk picom zig lua libX11-devel libXft-devel freetype2-devel \
   fontconfig-devel libXinerama-devel
 ```
 
 **Install betterlockscreen manually** (not in openSUSE repos):
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
+```
+
+**Install termusic manually** (not in openSUSE repos):
+```bash
+cargo install termusic
 ```
 
 > **Iosevka Nerd Font** isn't in openSUSE repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
@@ -208,18 +240,18 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 ```
 
-> **Before the next step** — edit `wallmenu` to point at your wallpaper directories:
+> **Before the next step** — edit `oxwm-thmctl` to point at your wallpaper directories:
 > ```bash
-> nano wallmenu
+> nano oxwm-thmctl  # switch nano for any editor you use (e.g. nvim, micro, emacs, etc...)
 > ```
 
 ```bash
-# Make wallmenu executable and move it to PATH
-chmod +x wallmenu
-sudo cp wallmenu /usr/local/bin/
+# Make oxwm-thmctl executable and move it to PATH
+chmod +x oxwm-thmctl
+sudo cp oxwm-thmctl /usr/local/bin/
 ```
 
-You don't have to use the included wallpapers — any folder works, just update the paths in `wallmenu`.
+You don't have to use the included wallpapers — any folder works, just update the paths in `oxwm-thmctl`.
 
 ---
 
@@ -229,20 +261,19 @@ You don't have to use the included wallpapers — any folder works, just update 
 
 | keybind | what it does |
 |---------|--------------|
-| `Super + Q` | open terminal (Alacritty) |
-| `Super + Shift + T` | open alt terminal (Kitty) |
+| `Super + Q` | open terminal (Kitty) |
 | `Super + D` | Rofi launcher |
-| `Super + Shift + D` | dmenu (actually useful paired with rofi) |
 | `Super + B` | open Brave |
 | `Super + Shift + B` | Bluetooth manager |
 | `Super + E` | file manager (Thunar) |
-| `Super + V` | VLC |
 | `Print` | screenshot via Flameshot |
 | `Super + C` | kill focused window |
+| `Super + Shift + L` | lock screen |
 | `Super + Shift + Q` | quit OXWM |
 | `Super + Shift + R` | **hot reload config** ← use this constantly |
 | `Super + Shift + /` | show keybind overlay |
-| `Alt + Shift` | toggle keyboard layout (US / Arabic) |
+| `Super + Ctrl + P` | power menu |
+| `Alt + Shift` | toggle keyboard layout (US / EG) |
 
 ### window & layout
 
@@ -258,7 +289,6 @@ You don't have to use the included wallpapers — any folder works, just update 
 | `Super + A` | toggle gaps |
 | `Super + Shift + F` | toggle fullscreen |
 | `Super + Shift + Space` | toggle floating |
-| `Super + Shift + L` | lock screen |
 
 ### workspaces
 
@@ -280,10 +310,10 @@ You don't have to use the included wallpapers — any folder works, just update 
 
 | sequence | what it does |
 |----------|--------------|
-| `Super + Space` → `W` | wallpaper / theme changer |
-| `Super + Space` → `M` | Termusic (music player) |
-| `Super + Space` → `C` | NMTUI (TUI-based NetworkManager program) |
-| `Super + Space` → `T` | new tmux session named "tmux-btw" |
+| `Super + Space` → `W` | wallpaper / theme switcher (oxwm-thmctl) |
+| `Super + Space` → `M` | Termusic (TUI music player) |
+| `Super + Space` → `C` | NMTUI (network manager) |
+| `Super + Space` → `T` | new tmux session |
 | `Super + Space` → `S` | Telegram |
 
 ### media keys
@@ -298,9 +328,11 @@ config lives at `~/.config/oxwm/config.lua` — edit it, hit `Super + Shift + R`
 
 ### switching color schemes
 
-6 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, and `Wallpaper Agnostic (other)`
+6 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, and `other` (wallpaper-agnostic fallback)
 
-change this one line in the config:
+the easiest way is via the theme switcher — `Super + Space` → `W` — it auto-swaps the theme based on your wallpaper folder name and hot-reloads instantly
+
+or change it manually by editing one line in the config:
 
 ```lua
 local theme_name = "nord" -- swap this out

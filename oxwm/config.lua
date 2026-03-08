@@ -1,7 +1,8 @@
 ---@meta
 
 ------------------------------------
----       ~ OXWM Config ~       ----
+---       ~ OXWM Config ~        ---
+---      By: TheIdioticDev       ---
 ------------------------------------
 
 ---@module 'oxwm'
@@ -13,9 +14,9 @@
 -- Modifier key: "Mod4" = Super/Windows key | "Mod1" = Alt
 local modkey = "Mod4"
 
-local terminal = "alacritty"
+local terminal = "kitty"
 
-local theme_name = "nord"
+local theme_name = "other"
 
 local colors = require(theme_name)
 
@@ -29,6 +30,46 @@ local bar_font = "Iosevka Nerd Font Propo:style=Bold:size=12"
 -- Bar Blocks
 -------------------------------------------------------------------------------
 
+local ram = oxwm.bar.block.ram({
+	format = "󰍛 Ram: {used}/{total} GB",
+	interval = 1,
+	color = colors.light_blue,
+	underline = true,
+})
+
+local kernel = oxwm.bar.block.shell({
+	format = "  {}",
+	command = "uname -r",
+	interval = 999999999,
+	color = colors.red,
+	underline = true,
+})
+
+local storage = oxwm.bar.block.shell({
+	command = "df -h / | awk 'NR==2 {print \"󰋊 \" $5}'",
+	interval = 60,
+	color = colors.green,
+	underline = true,
+})
+
+local date = oxwm.bar.block.datetime({
+	format = "󰸘 {}",
+	date_format = "%a, %b %d - %-I:%M %P",
+	interval = 1,
+	color = colors.cyan,
+	underline = true,
+})
+
+local battery = oxwm.bar.block.battery({
+	format = "󰁹 {}%",
+	charging = "⚡󰁹 {}%",
+	discharging = "-󰁹 {}%",
+	full = "✓󰁹 {}%",
+	interval = 10,
+	color = colors.green,
+	underline = true,
+})
+
 local sep = oxwm.bar.block.static({
 	text = "│",
 	interval = 999999999,
@@ -36,40 +77,19 @@ local sep = oxwm.bar.block.static({
 	underline = false,
 })
 
+-------------------------------------------------------------------------------------------------------------
+-- Bar
+-------------------------------------------------------------------------------------------------------------
 local blocks = {
-	oxwm.bar.block.shell({
-		format = " {}",
-		command = "uname -r",
-		interval = 999999999,
-		color = colors.red,
-		underline = true,
-	}),
+	kernel,
 	sep,
-	oxwm.bar.block.ram({
-		format = "󰍛 Ram: {used}/{total} GB",
-		interval = 1,
-		color = colors.light_blue,
-		underline = true,
-	}),
+	ram,
 	sep,
-	oxwm.bar.block.datetime({
-		format = "󰸘 {}",
-		date_format = "%a, %b %d - %-I:%M %P",
-		interval = 1,
-		color = colors.cyan,
-		underline = true,
-	}),
+	date,
 	sep,
-	oxwm.bar.block.battery({
-		format = "󰁹 {}%",
-		charging = "⚡󰁹 {}%",
-		discharging = "-󰁹 {}%",
-		full = "✓󰁹 {}%",
-		interval = 10,
-		color = colors.green,
-		underline = true,
-	}),
+	battery,
 	sep,
+	storage,
 }
 
 -------------------------------------------------------------------------------
@@ -85,14 +105,14 @@ oxwm.set_tags(tags)
 -------------------------------------------------------------------------------
 
 -- Border
-oxwm.border.set_width(2)
-oxwm.border.set_focused_color(colors.blue)
+oxwm.border.set_width(0)
+oxwm.border.set_focused_color(colors.purple)
 oxwm.border.set_unfocused_color(colors.sep)
 
 -- Gaps (Smart = no border when only 1 window)
-oxwm.gaps.set_smart(true)
-oxwm.gaps.set_inner(25, 25) -- (horizontal, vertical) in pixels
-oxwm.gaps.set_outer(25, 25) -- (horizontal, vertical) in pixels
+oxwm.gaps.set_smart(false)
+oxwm.gaps.set_inner(0, 0) -- (horizontal, vertical) in pixels
+oxwm.gaps.set_outer(0, 0) -- (horizontal, vertical) in pixels
 
 -------------------------------------------------------------------------------
 -- Layouts
@@ -109,12 +129,24 @@ oxwm.set_layout_symbol("grid", "[G]")
 -- Window Rules
 -------------------------------------------------------------------------------
 
-oxwm.rule.add({ instance = "blueman-manager", floating = true })
+oxwm.rule.add({ instance = "kitty", tag = 1 })
 oxwm.rule.add({ instance = "brave-browser", tag = 2 })
+oxwm.rule.add({ instance = "connect", floating = true })
+oxwm.rule.add({ instance = "connect", tag = 6 })
 oxwm.rule.add({ instance = "gimp", floating = true })
+oxwm.rule.add({ instance = "libreoffice-writer", tag = 6 })
+oxwm.rule.add({ instance = "libreoffice-calc", tag = 6 })
+oxwm.rule.add({ instance = "libreoffice", tag = 6 })
+oxwm.rule.add({ instance = "Telegram", tag = 5 })
 oxwm.rule.add({ instance = "thunar", tag = 9 })
 oxwm.rule.add({ instance = "vlc", tag = 3 })
-oxwm.rule.add({ instance = "connect", floating = true })
+oxwm.rule.add({ instance = "st-256color", fullscreen = true })
+oxwm.rule.add({ instance = "Terraria.bin.x86_64", tag = 8 })
+oxwm.rule.add({ instance = "itch", tag = 8 })
+oxwm.rule.add({ instance = "music", tag = 3 })
+oxwm.rule.add({ instance = "uzdoom", tag = 8 })
+oxwm.rule.add({ instance = "Godot_Editor", floating = true })
+oxwm.rule.add({ instance = "blueman-manager", floating = true })
 
 -------------------------------------------------------------------------------
 -- Status Bar
@@ -133,16 +165,15 @@ oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple) -- Selected
 -------------------------------------------------------------------------------
 
 -- Apps
---                Modifiers   |   Key   |    Action
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
-oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "rofi -show drun" }))
-oxwm.key.bind({ modkey, "Shift" }, "D", oxwm.spawn({ "sh", "-c", "dmenu_run -l 10" }))
-oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "blueman-manager" }))
-oxwm.key.bind({ modkey, "Shift" }, "B", oxwm.spawn({ "brave" }))
-oxwm.key.bind({ modkey }, "V", oxwm.spawn({ "vlc" }))
-oxwm.key.bind({}, "Print", oxwm.spawn({ "flameshot gui" }))
+oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "~/.config/rofi/launchers/type-1/launcher.sh" }))
+oxwm.key.bind({ modkey, "Shift" }, "B", oxwm.spawn({ "blueman-manager" }))
+oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "brave" }))
+oxwm.key.bind({}, "Print", oxwm.spawn({ "sh", "-c", "maim -s | xclip -selection clipboard -t image/png" }))
 oxwm.key.bind({ modkey }, "E", oxwm.spawn({ "thunar" }))
+
 -- Window management
+oxwm.key.bind({ modkey, "Shift" }, "L", oxwm.spawn({ "betterlockscreen -l" }))
 oxwm.key.bind({ modkey }, "C", oxwm.client.kill())
 oxwm.key.bind({ modkey, "Shift" }, "F", oxwm.client.toggle_fullscreen())
 oxwm.key.bind({ modkey, "Shift" }, "Space", oxwm.client.toggle_floating())
@@ -154,6 +185,8 @@ oxwm.key.bind({ modkey, "Shift" }, "K", oxwm.client.move_stack(-1)) -- Move down
 -- Layout
 oxwm.key.bind({ modkey }, "T", oxwm.layout.set("tiling"))
 oxwm.key.bind({ modkey }, "N", oxwm.layout.cycle())
+oxwm.key.bind({ modkey }, "S", oxwm.layout.scroll_left())
+oxwm.key.bind({ modkey, "Shift" }, "S", oxwm.layout.scroll_right())
 
 -- Master area (tiling)
 oxwm.key.bind({ modkey }, "H", oxwm.set_master_factor(-5)) -- Shrink master
@@ -165,9 +198,10 @@ oxwm.key.bind({ modkey }, "P", oxwm.inc_num_master(-1)) -- Fewer masters
 oxwm.key.bind({ modkey }, "A", oxwm.toggle_gaps())
 
 -- WM controls
-oxwm.key.bind({ modkey, "Shift" }, "Q", oxwm.spawn({ "wlogout" }))
+oxwm.key.bind({ modkey, "Shift" }, "Q", oxwm.quit())
 oxwm.key.bind({ modkey, "Shift" }, "R", oxwm.restart())
 oxwm.key.bind({ modkey, "Shift" }, "Slash", oxwm.show_keybinds())
+oxwm.key.bind({ modkey, "Control" }, "P", oxwm.spawn({ "sh", "-c", "~/.config/rofi/powermenu/type-1/powermenu.sh" }))
 
 -- Multi-monitor
 oxwm.key.bind({ modkey }, "Comma", oxwm.monitor.focus(-1)) -- Focus prev monitor
@@ -240,7 +274,7 @@ oxwm.key.chord({
 oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "M" },
-}, oxwm.spawn({ "st termusic" }))
+}, oxwm.spawn({ "kitty --class music -e termusic" }))
 
 oxwm.key.chord({
 	{ { modkey }, "Space" },
@@ -252,14 +286,17 @@ oxwm.key.chord({
 	{ {}, "T" },
 }, oxwm.spawn({ "st -e tmux new -s tmux-btw" }))
 
+oxwm.key.chord({
+	{ { modkey }, "Space" },
+	{ {}, "S" },
+}, oxwm.spawn({ "Telegram" }))
 -------------------------------------------------------------------------------
 -- Autostart
 -------------------------------------------------------------------------------
 
-oxwm.autostart("xset r rate 300 50")
+oxwm.autostart("xset r rate 200 35")
 oxwm.autostart("picom")
 oxwm.autostart("xwallpaper --zoom ~/.local/share/current_wallpaper")
 oxwm.autostart("dunst")
-oxwm.autostart("setxkbmap -option ''")
 oxwm.autostart("setxkbmap -layout us,eg -option 'grp:alt_shift_toggle'")
-oxwm.autostart("xss-lock -- i3lock")
+oxwm.autostart("xss-lock -- betterlockscreen -l")

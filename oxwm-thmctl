@@ -16,7 +16,7 @@ while IFS= read -r file; do
 done < <(find "$WALL_DIR" -mindepth 2 -type f -printf "%P\n")
 
 # Launch rofi as a visual grid wallpaper picker
-SELECTION=$(echo -e "$LIST" | rofi -dmenu -i -p "Environment Control" \
+SELECTION=$(echo -e "$LIST" | rofi -dmenu -i -p "OXWM Theme Control" \
   -show-icons \
   -theme-str 'window { width: 50%; } listview { columns: 3; lines: 3; } element { orientation: vertical; } element-icon { size: 150px; } element-text { horizontal-align: 0.5; }')
 
