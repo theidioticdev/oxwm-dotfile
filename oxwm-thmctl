@@ -39,7 +39,6 @@ if [ -n "$SELECTION" ]; then
   betterlockscreen -u "$HOME/.local/share/current_wallpaper" --fx blur &
 
   if [ -f "$CONFIG_FILE" ]; then
-    # ... rest of your script  if [ -f "$CONFIG_FILE" ]; then
     # Swap the theme name in config.lua to match the selected wallpaper's folder
     sed -i "s/local theme_name = \".*\"/local theme_name = \"$THEME\"/" "$CONFIG_FILE"
     # Hot reload OXWM if it's running

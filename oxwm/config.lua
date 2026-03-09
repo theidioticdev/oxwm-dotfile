@@ -130,7 +130,7 @@ oxwm.set_layout_symbol("grid", "[G]")
 -------------------------------------------------------------------------------
 
 oxwm.rule.add({ instance = "kitty", tag = 1 })
-oxwm.rule.add({ instance = "brave-browser", tag = 2 })
+oxwm.rule.add({ instance = "librewolf", tag = 2 })
 oxwm.rule.add({ instance = "connect", floating = true })
 oxwm.rule.add({ instance = "connect", tag = 6 })
 oxwm.rule.add({ instance = "gimp", floating = true })
@@ -140,13 +140,13 @@ oxwm.rule.add({ instance = "libreoffice", tag = 6 })
 oxwm.rule.add({ instance = "Telegram", tag = 5 })
 oxwm.rule.add({ instance = "thunar", tag = 9 })
 oxwm.rule.add({ instance = "vlc", tag = 3 })
-oxwm.rule.add({ instance = "st-256color", fullscreen = true })
 oxwm.rule.add({ instance = "Terraria.bin.x86_64", tag = 8 })
 oxwm.rule.add({ instance = "itch", tag = 8 })
 oxwm.rule.add({ instance = "music", tag = 3 })
 oxwm.rule.add({ instance = "uzdoom", tag = 8 })
 oxwm.rule.add({ instance = "Godot_Editor", floating = true })
 oxwm.rule.add({ instance = "blueman-manager", floating = true })
+oxwm.rule.add({ instance = "tmuxbtw", tag = 4 })
 
 -------------------------------------------------------------------------------
 -- Status Bar
@@ -168,7 +168,7 @@ oxwm.bar.set_scheme_selected(colors.cyan, colors.bg, colors.purple) -- Selected
 oxwm.key.bind({ modkey }, "Q", oxwm.spawn_terminal())
 oxwm.key.bind({ modkey }, "D", oxwm.spawn({ "sh", "-c", "~/.config/rofi/launchers/type-1/launcher.sh" }))
 oxwm.key.bind({ modkey, "Shift" }, "B", oxwm.spawn({ "blueman-manager" }))
-oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "brave" }))
+oxwm.key.bind({ modkey }, "B", oxwm.spawn({ "librewolf" }))
 oxwm.key.bind({}, "Print", oxwm.spawn({ "sh", "-c", "maim -s | xclip -selection clipboard -t image/png" }))
 oxwm.key.bind({ modkey }, "E", oxwm.spawn({ "thunar" }))
 
@@ -269,7 +269,7 @@ oxwm.key.bind({}, "XF86AudioPrev", oxwm.spawn({ "playerctl previous" }))
 oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "W" },
-}, oxwm.spawn({ "wallmenu" }))
+}, oxwm.spawn({ "oxwm-thmctl" }))
 
 oxwm.key.chord({
 	{ { modkey }, "Space" },
@@ -284,7 +284,7 @@ oxwm.key.chord({
 oxwm.key.chord({
 	{ { modkey }, "Space" },
 	{ {}, "T" },
-}, oxwm.spawn({ "st -e tmux new -s tmux-btw" }))
+}, oxwm.spawn({ "kitty --class -e tmux new -s tmux-btw" }))
 
 oxwm.key.chord({
 	{ { modkey }, "Space" },
