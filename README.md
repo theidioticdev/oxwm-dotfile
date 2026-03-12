@@ -1,6 +1,6 @@
 # OXWM Dotfile
 
-my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever — just don't blame me if something breaks lol
+my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever - just don't blame me if something breaks lol
 
 ---
 
@@ -13,13 +13,13 @@ my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever — jus
 
 ## What even is OXWM?
 
-it's a dynamic window manager written in Zig, basically dwm but actually bearable to configure. no more recompiling C every time you wanna change a keybind fr
+it's a dynamic window manager written in Zig, basically dwm but actually bearable to configure. no more recompiling C every time you wanna change a keybind
 
-- **Lua config with hot-reload** — `Super + Shift + R` and you're done, no recompile needed
-- **LSP support** — autocomplete in your config file like a normal person
-- **Keychord support** — vim-style multi-key bindings
-- **Built-in status bar** — no need for polybar or lemonbar
-- **Multi-monitor support** — it just works
+- **Lua config with hot-reload** - `Super + Shift + R` and you're done, no recompile needed
+- **LSP support** - autocomplete in your config file like a normal person
+- **Keychord support** - vim-style multi-key bindings
+- **Built-in status bar** - no need for polybar or lemonbar
+- **Multi-monitor support** - it just works
 
 → [official repo](https://github.com/tonybanters/oxwm)
 
@@ -52,25 +52,29 @@ all color-coded and underlined per block, each one has its own update interval s
 
 ## Installation
 
-### Step 1 — Install Dependencies
+### Step 1 - Install Dependencies
 
 <details>
 <summary>Arch / CachyOS (recommended)</summary>
 
 **One-liner:**
+
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
 ```
 
 or with curl:
+
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/main/install.sh)
 ```
 
 or manually:
+
 ```bash
+# You can replace yay with paru
 yay -S oxwm-git kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
-  xwallpaper dunst network-manager-applet wireplumber xorg-setxkbmap gawk \
+  xwallpaper dunst networkmanager wireplumber xorg-setxkbmap gawk \
   ttf-iosevka-nerd picom betterlockscreen zig lua libx11 libxft freetype2 \
   fontconfig libxinerama termusic
 ```
@@ -81,6 +85,7 @@ yay -S oxwm-git kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
 <summary>Debian / Ubuntu / Mint</summary>
 
 **Add the Brave repo:**
+
 ```bash
 sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
   https://brave-browser-apt-release.s3.brave.com/brave-browser-archive-keyring.gpg
@@ -93,42 +98,56 @@ sudo apt update
 ```
 
 **Install everything:**
+
 ```bash
 sudo apt install -y kitty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst network-manager-applet wireplumber gawk picom \
-  fonts-iosevka-nerd zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
+  blueman thunar xwallpaper dunst network-manager wireplumber gawk picom \
+  zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
 ```
 
+> **Iosevka Nerd Font** isn't in apt repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+>
+> ```bash
+> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> ```
+
 **Install betterlockscreen manually** (not in apt repos):
+
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install termusic manually** (not in apt repos):
+**Install Rust + Cargo** (needed for termusic):
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+```
+
+**Install termusic:**
+
 ```bash
 cargo install termusic
 ```
 
 > **Kitty not in your repos?** Grab it directly:
+>
 > ```bash
 > curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
 > ```
 
-> **Iosevka Nerd Font not in your repos?** Grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
-> ```bash
-> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-> ```
-
 > **Zig not in apt?** Either use snap:
+>
 > ```bash
 > sudo snap install zig --classic --beta
 > ```
-> or grab it directly:
+>
+> or grab the latest version directly from [ziglang.org/download](https://ziglang.org/download) - download the `zig-linux-x86_64-X.Y.Z.tar.xz` for your version, then:
+>
 > ```bash
-> wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
-> tar -xf zig-linux-x86_64-0.15.2.tar.xz
-> sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+> tar -xf zig-linux-x86_64-X.Y.Z.tar.xz
+> sudo mv zig-linux-x86_64-X.Y.Z /opt/zig
 > echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
 > ```
 
@@ -138,6 +157,7 @@ cargo install termusic
 <summary>Fedora / RHEL / Rocky / Alma</summary>
 
 **Add the Brave repo:**
+
 ```bash
 sudo dnf install -y dnf-plugins-core
 sudo dnf config-manager --add-repo \
@@ -146,33 +166,54 @@ sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 ```
 
 **Install everything:**
+
 ```bash
 sudo dnf install -y kitty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar dunst NetworkManager-tui wireplumber gawk picom \
+  blueman thunar dunst NetworkManager wireplumber gawk picom \
   zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
+> **nmtui** ships with NetworkManager - just run `nmtui` in a terminal to manage connections.
+
+**xwallpaper** - easiest via COPR:
+
+```bash
+sudo dnf copr enable linuxredneck/xwallpaper
+sudo dnf install xwallpaper
+```
+
+or build from source if you'd rather not use COPR:
+
+```bash
+sudo dnf install -y libX11-devel libXft-devel imlib2-devel
+git clone https://github.com/stoeckmann/xwallpaper
+cd xwallpaper && ./autogen.sh && ./configure && make && sudo make install
+```
+
+> **Iosevka Nerd Font** isn't in Fedora repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+>
+> ```bash
+> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> ```
+
 **Install betterlockscreen manually** (not in Fedora repos):
+
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install termusic manually** (not in Fedora repos):
+**Install Rust + Cargo** (needed for termusic):
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+```
+
+**Install termusic:**
+
 ```bash
 cargo install termusic
 ```
-
-> **xwallpaper is not in Fedora's repos** — build it from source:
-> ```bash
-> sudo dnf install -y libX11-devel libXft-devel imlib2-devel
-> git clone https://github.com/stoeckmann/xwallpaper
-> cd xwallpaper && ./autogen.sh && ./configure && make && sudo make install
-> ```
-
-> **Iosevka Nerd Font** isn't in Fedora repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
-> ```bash
-> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-> ```
 
 </details>
 
@@ -180,6 +221,7 @@ cargo install termusic
 <summary>openSUSE Tumbleweed</summary>
 
 **Add the Brave repo:**
+
 ```bash
 sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/brave-browser.repo
@@ -187,30 +229,44 @@ sudo zypper refresh
 ```
 
 **Add the X11:XOrg repo (needed for picom):**
+
 ```bash
 sudo zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Tumbleweed/X11:XOrg.repo
 sudo zypper refresh
 ```
 
 **Install everything:**
+
 ```bash
 sudo zypper install -y kitty brave-browser rofi flameshot xclip playerctl \
-  blueman thunar xwallpaper dunst NetworkManager-applet \
+  blueman thunar xwallpaper dunst NetworkManager \
   wireplumber gawk picom zig lua libX11-devel libXft-devel freetype2-devel \
   fontconfig-devel libXinerama-devel
 ```
 
+> **nmtui** ships with NetworkManager - just run `nmtui` in a terminal to manage connections.
+
 **Install betterlockscreen manually** (not in openSUSE repos):
+
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install termusic manually** (not in openSUSE repos):
+**Install Rust + Cargo** (needed for termusic):
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+source ~/.cargo/env
+```
+
+**Install termusic:**
+
 ```bash
 cargo install termusic
 ```
 
-> **Iosevka Nerd Font** isn't in openSUSE repos — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+> **Iosevka Nerd Font** isn't in openSUSE repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+>
 > ```bash
 > mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
 > ```
@@ -219,7 +275,7 @@ cargo install termusic
 
 ---
 
-### Step 2 — Install the Config
+### Step 2 - Install the Config
 
 ```bash
 # Clone the repo
@@ -240,7 +296,8 @@ mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 ```
 
-> **Before the next step** — edit `oxwm-thmctl` to point at your wallpaper directories:
+> **Before the next step** - edit `oxwm-thmctl` to point at your wallpaper directories:
+>
 > ```bash
 > nano oxwm-thmctl  # switch nano for any editor you use (e.g. nvim, micro, emacs, etc...)
 > ```
@@ -248,10 +305,10 @@ cp -r ./walls ~/dotfiles/
 ```bash
 # Make oxwm-thmctl executable and move it to PATH
 chmod +x oxwm-thmctl
-sudo cp oxwm-thmctl /usr/local/bin/
+sudo cp oxwm-thmctl /usr/local/bin/  # or ~/.local/bin/
 ```
 
-You don't have to use the included wallpapers — any folder works, just update the paths in `oxwm-thmctl`.
+You don't have to use the included wallpapers - any folder works, just update the paths in `oxwm-thmctl`.
 
 ---
 
@@ -324,13 +381,13 @@ volume up/down/mute + play/pause/next/prev all work out of the box via PipeWire/
 
 ## Customization
 
-config lives at `~/.config/oxwm/config.lua` — edit it, hit `Super + Shift + R`, done
+config lives at `~/.config/oxwm/config.lua` - edit it, hit `Super + Shift + R`, done
 
 ### switching color schemes
 
 6 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, and `other` (wallpaper-agnostic fallback)
 
-the easiest way is via the theme switcher — `Super + Space` → `W` — it auto-swaps the theme based on your wallpaper folder name and hot-reloads instantly
+the easiest way is via the theme switcher - `Super + Space` → `W` - it auto-swaps the theme based on your wallpaper folder name and hot-reloads instantly
 
 or change it manually by editing one line in the config:
 
@@ -364,4 +421,4 @@ fork it, break it, make it yours. issues and PRs are welcome if you've got somet
 
 ## License
 
-do whatever you want with it lol
+GPL-3.0 - see [LICENSE](LICENSE) for the full text. tl;dr: use it, modify it, share it, just keep it open source

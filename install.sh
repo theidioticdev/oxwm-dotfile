@@ -1,21 +1,45 @@
 #!/bin/bash
 set -e
 
-GREEN='\033[0;32m'
+# ─── Colors ───────────────────────────────────────────────────────────────────
+WHITE='\033[1;37m'
+GREY='\033[0;90m'
 BLUE='\033[0;34m'
 RED='\033[0;31m'
 YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
 NC='\033[0m'
+
+# ─── Banner ───────────────────────────────────────────────────────────────────
+print_banner() {
+  echo -e "${WHITE}"
+  echo '  ██████╗ ██╗  ██╗██╗    ██╗███╗   ███╗'
+  echo ' ██╔═══██╗╚██╗██╔╝██║    ██║████╗ ████║'
+  echo ' ██║   ██║ ╚███╔╝ ██║ █╗ ██║██╔████╔██║'
+  echo ' ██║   ██║ ██╔██╗ ██║███╗██║██║╚██╔╝██║'
+  echo ' ╚██████╔╝██╔╝ ██╗╚███╔███╔╝██║ ╚═╝ ██║'
+  echo '  ╚═════╝ ╚═╝  ╚═╝ ╚══╝╚══╝ ╚═╝     ╚═╝'
+  echo -e "${GREY}  TheIdioticDev's OXWM dotfile installer — Arch only${NC}"
+  echo -e "${GREY}  ─────────────────────────────────────────────────────${NC}\n"
+}
+
+# ─── UI Helper ────────────────────────────────────────────────────────────────
+prompt_step() {
+  echo -e -n "${WHITE}$(whoami)${NC} ${GREY}in${NC} ${WHITE}$(pwd | sed "s|^$HOME|~|")${NC} ${WHITE}→${NC} $1"
+}
+
+clear
+print_banner
 
 # ─── Arch only ────────────────────────────────────────────────────────────────
 if ! command -v pacman &>/dev/null; then
-  echo -e "${RED}This script is for Arch-based systems only.${NC}"
+  echo -e "${RED}✘ Error: This script is for Arch-based systems only.${NC}"
   exit 1
 fi
 
 # ─── Pacman lock check ────────────────────────────────────────────────────────
 if [ -f /var/lib/pacman/db.lck ]; then
-  echo -e "${RED}Pacman is currently locked. Finish the other transaction and try again.${NC}"
+  echo -e "${RED}✘ Pacman is currently locked. Finish the other transaction first.${NC}"
   exit 1
 fi
 
@@ -26,15 +50,25 @@ if command -v yay &>/dev/null; then
 elif command -v paru &>/dev/null; then
   AUR_HELPER="paru"
 else
-  echo -e "${RED}No AUR helper found (yay or paru). Please install one first.${NC}"
-  echo -e "${YELLOW}Install yay: https://github.com/Jguer/yay${NC}"
-  exit 1
+  prompt_step "${YELLOW}No AUR helper found. Install yay now? (y/n): ${NC}"
+  read -r install_aur
+  if [[ "$install_aur" =~ ^([yY])$ ]]; then
+    echo -e "\n${BLUE}Installing yay...${NC}"
+    sudo pacman -S --needed base-devel git
+    git clone https://aur.archlinux.org/yay.git /tmp/yay_build
+    cd /tmp/yay_build && makepkg -si --noconfirm && cd -
+    rm -rf /tmp/yay_build
+    AUR_HELPER="yay"
+    echo -e "${GREEN}✔ yay installed.${NC}\n"
+  else
+    echo -e "${RED}✘ Cancelled. Install yay (https://github.com/Jguer/yay) or paru and try again.${NC}"
+    exit 1
+  fi
 fi
 
 sudo -v
 
-echo -e "${BLUE}Starting TheIdioticDev's OXWM dotfile installer for Arch-based systems...${NC}"
-echo -e "${BLUE}Using AUR helper: ${AUR_HELPER}${NC}"
+echo -e "${BLUE}AUR Helper:${NC} $AUR_HELPER\n"
 
 # ─── Packages ─────────────────────────────────────────────────────────────────
 PKGS=(
@@ -64,7 +98,7 @@ PKGS=(
 
   # Bluetooth & network
   "blueman"
-  "network-manager-applet"
+  "networkmanager"
 
   # File manager
   "thunar"
@@ -101,28 +135,36 @@ PKGS=(
 
 # ─── Check what's missing ─────────────────────────────────────────────────────
 MISSING_PKGS=()
-echo ""
-echo "Checking for installed dependencies..."
-echo ""
+echo -e "${GREY}Scanning dependencies...${NC}\n"
 
 for pkg in "${PKGS[@]}"; do
   if pacman -Qq "$pkg" &>/dev/null; then
-    echo -e "${GREEN}[✓]${NC} $pkg"
+    echo -e "  ${GREEN}[✔]${NC} $pkg"
   else
-    echo -e "${YELLOW}[ ]${NC} $pkg is missing."
+    echo -e "  ${YELLOW}[ ]${NC} $pkg"
     MISSING_PKGS+=("$pkg")
   fi
 done
 
 echo ""
 
-# ─── Install or exit ──────────────────────────────────────────────────────────
+# ─── Already good? ────────────────────────────────────────────────────────────
 if [ ${#MISSING_PKGS[@]} -eq 0 ]; then
-  echo -e "${GREEN}Everything is already installed! You're good to go.${NC}"
-else
-  echo -e "${BLUE}Installing ${#MISSING_PKGS[@]} missing package(s): ${MISSING_PKGS[*]}${NC}"
-  echo ""
+  echo -e "${GREEN}✔ Everything is already installed. You're good to go.${NC}"
+  exit 0
+fi
+
+# ─── Confirm & install ────────────────────────────────────────────────────────
+echo -e "${BLUE}Missing:${NC} ${#MISSING_PKGS[@]} package(s): ${GREY}${MISSING_PKGS[*]}${NC}\n"
+
+prompt_step "${WHITE}Proceed with installation? (y/n): ${NC}"
+read -r confirm
+
+if [[ "$confirm" =~ ^([yY])$ ]]; then
+  echo -e "\n${BLUE}Starting sync...${NC}\n"
   $AUR_HELPER -S --needed "${MISSING_PKGS[@]}"
-  echo ""
-  echo -e "${GREEN}All done! You can now run the rest of the setup.${NC}"
+  echo -e "\n${GREEN}✔ All done! You can now run the rest of the setup.${NC}"
+else
+  echo -e "\n${RED}✘ Cancelled.${NC}"
+  exit 0
 fi
