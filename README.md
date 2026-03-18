@@ -1,6 +1,6 @@
 # OXWM Dotfile
 
-OXWM setup I use daily, feek free to use it!
+OXWM setup I use daily, feel free to use it!
 ---
 
 ## Screenshots
