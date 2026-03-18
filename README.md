@@ -100,7 +100,7 @@ sudo apt update
 ```bash
 sudo apt install -y kitty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst network-manager wireplumber gawk picom \
-  zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
+  lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
 ```
 
@@ -250,11 +250,12 @@ cargo install termusic
 > ```
 
 </details>
+
 <details>
 <summary>Installing Zig (all distros except Arch)</summary>
 
 **Debian / Ubuntu / Mint** — unofficial apt repo by [dariogriffo](https://github.com/dariogriffo/debian.griffo.io) (not affiliated with ziglang.org):
-````bash
+```bash
 curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
   | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
 
@@ -262,7 +263,7 @@ echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" \
   | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
 
 sudo apt update && sudo apt install zig
-` ` `
+```
 
 **Fedora / RHEL / openSUSE** — repos are behind, grab it manually:
 ```bash
@@ -270,14 +271,11 @@ wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
 tar -xf zig-linux-x86_64-0.15.2.tar.xz
 sudo mv zig-linux-x86_64-0.15.2 /opt/zig
 echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
-` ` `
-
-> if you're on Fedora 42+ or Tumbleweed, you can try your package manager first and check with `zig version` — if it's not 0.15.2, use the manual method above.
-
-</details>
 ```
 
-drop that right after the last distro `</details>` and before the `---` that leads into Step 2. also remember to remove the Zig bits from the Debian, Fedora, and openSUSE blocks since they're redundant now.
+> on Fedora 42+ or Tumbleweed you can try your package manager first and check with `zig version` — if it's not 0.15.2, use the manual method above.
+
+</details>
 
 ---
 
