@@ -1,13 +1,11 @@
 # OXWM Dotfile
 
-my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever - just don't blame me if something breaks lol
-
+OXWM setup I use daily, feek free to use it!
 ---
 
 ## Screenshots
 
 ![Desktop](screenshot.png)
-![Floating Windows](floatingwindows.png)
 
 ---
 
@@ -131,26 +129,6 @@ source ~/.cargo/env
 cargo install termusic
 ```
 
-> **Kitty not in your repos?** Grab it directly:
->
-> ```bash
-> curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-> ```
-
-> **Zig not in apt?** Either use snap:
->
-> ```bash
-> sudo snap install zig --classic --beta
-> ```
->
-> or grab the latest version directly from [ziglang.org/download](https://ziglang.org/download) - download the `zig-linux-x86_64-X.Y.Z.tar.xz` for your version, then:
->
-> ```bash
-> tar -xf zig-linux-x86_64-X.Y.Z.tar.xz
-> sudo mv zig-linux-x86_64-X.Y.Z /opt/zig
-> echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
-> ```
-
 </details>
 
 <details>
@@ -170,7 +148,7 @@ sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 ```bash
 sudo dnf install -y kitty brave-browser rofi flameshot xclip playerctl \
   blueman thunar dunst NetworkManager wireplumber gawk picom \
-  zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
+  lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
 > **nmtui** ships with NetworkManager - just run `nmtui` in a terminal to manage connections.
@@ -240,7 +218,7 @@ sudo zypper refresh
 ```bash
 sudo zypper install -y kitty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst NetworkManager \
-  wireplumber gawk picom zig lua libX11-devel libXft-devel freetype2-devel \
+  wireplumber gawk picom lua libX11-devel libXft-devel freetype2-devel \
   fontconfig-devel libXinerama-devel
 ```
 
@@ -272,6 +250,34 @@ cargo install termusic
 > ```
 
 </details>
+<details>
+<summary>Installing Zig (all distros except Arch)</summary>
+
+**Debian / Ubuntu / Mint** — unofficial apt repo by [dariogriffo](https://github.com/dariogriffo/debian.griffo.io) (not affiliated with ziglang.org):
+````bash
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
+  | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" \
+  | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
+
+sudo apt update && sudo apt install zig
+` ` `
+
+**Fedora / RHEL / openSUSE** — repos are behind, grab it manually:
+```bash
+wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
+tar -xf zig-linux-x86_64-0.15.2.tar.xz
+sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
+` ` `
+
+> if you're on Fedora 42+ or Tumbleweed, you can try your package manager first and check with `zig version` — if it's not 0.15.2, use the manual method above.
+
+</details>
+```
+
+drop that right after the last distro `</details>` and before the `---` that leads into Step 2. also remember to remove the Zig bits from the Debian, Fedora, and openSUSE blocks since they're redundant now.
 
 ---
 
