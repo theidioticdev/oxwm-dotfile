@@ -254,6 +254,8 @@ cargo install termusic
 <details>
 <summary>Installing Zig (all distros except Arch)</summary>
 
+
+
 **Debian / Ubuntu / Mint** — unofficial apt repo by [dariogriffo](https://github.com/dariogriffo/debian.griffo.io) (not affiliated with ziglang.org):
 ```bash
 curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
