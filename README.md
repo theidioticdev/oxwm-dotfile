@@ -13,13 +13,13 @@ my personal OXWM + fastfetch + bashrc setup. steal it, fork it, whatever - just 
 
 ## What even is OXWM?
 
-it's a dynamic window manager written in Zig, basically dwm but actually bearable to configure. no more recompiling C every time you wanna change a keybind
+dynamic window manager written in Zig. basically dwm but you configure it with Lua instead of recompiling C every time you want to change a keybind.
 
-- **Lua config with hot-reload** - `Super + Shift + R` and you're done, no recompile needed
-- **LSP support** - autocomplete in your config file like a normal person
-- **Keychord support** - vim-style multi-key bindings
-- **Built-in status bar** - no need for polybar or lemonbar
-- **Multi-monitor support** - it just works
+- **Lua config with hot-reload** — `Super + Shift + R`, no recompile needed
+- **LSP support** — autocomplete in your config like a normal person
+- **Keychord support** — vim-style multi-key bindings
+- **Built-in status bar** — no polybar/lemonbar needed
+- **Multi-monitor support** — it just works
 
 → [official repo](https://github.com/tonybanters/oxwm)
 
@@ -44,9 +44,9 @@ it's a dynamic window manager written in Zig, basically dwm but actually bearabl
 
 ## What's in the bar
 
-the status bar shows: kernel version · RAM usage · date/time · battery · disk usage
+kernel version · RAM usage · date/time · battery · disk usage
 
-all color-coded and underlined per block, each one has its own update interval so it's not killing your CPU
+color-coded and underlined per block, each with its own update interval.
 
 ---
 
@@ -72,7 +72,7 @@ bash <(curl -fsSL https://raw.githubusercontent.com/theidioticdev/oxwm-dotfile/m
 or manually:
 
 ```bash
-# You can replace yay with paru
+# you can replace yay with paru
 yay -S oxwm-git kitty brave-bin rofi flameshot xclip playerctl blueman thunar \
   xwallpaper dunst networkmanager wireplumber xorg-setxkbmap gawk \
   ttf-iosevka-nerd picom betterlockscreen zig lua libx11 libxft freetype2 \
@@ -93,62 +93,61 @@ sudo curl -fsSLo /usr/share/keyrings/brave-browser-archive-keyring.gpg \
 echo "deb [signed-by=/usr/share/keyrings/brave-browser-archive-keyring.gpg arch=amd64] \
   https://brave-browser-apt-release.s3.brave.com/ stable main" \
   | sudo tee /etc/apt/sources.list.d/brave-browser.list
+```
 
-sudo apt update
+**Add the Zig repo** (unofficial community repo by [dariogriffo](https://github.com/dariogriffo/debian.griffo.io) — not affiliated with ziglang.org):
+
+```bash
+curl -sS https://debian.griffo.io/EA0F721D231FDD3A0A17B9AC7808B4DD62C41256.asc \
+  | sudo gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/debian.griffo.io.gpg
+
+echo "deb https://debian.griffo.io/apt $(lsb_release -sc 2>/dev/null) main" \
+  | sudo tee /etc/apt/sources.list.d/debian.griffo.io.list
 ```
 
 **Install everything:**
 
 ```bash
+sudo apt update
 sudo apt install -y kitty brave-browser rofi flameshot xclip playerctl \
   blueman thunar xwallpaper dunst network-manager wireplumber gawk picom \
   zig lua5.4 libx11-dev libxft-dev libfreetype6-dev \
   libfontconfig1-dev libxinerama-dev
 ```
 
-> **Iosevka Nerd Font** isn't in apt repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+> **Zig not installing from the repo above?** Grab it manually from [ziglang.org/download](https://ziglang.org/download) — download the `zig-linux-x86_64-0.15.2.tar.xz`, then:
 >
 > ```bash
-> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> tar -xf zig-linux-x86_64-0.15.2.tar.xz
+> sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+> echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
 > ```
 
-**Install betterlockscreen manually** (not in apt repos):
+**Iosevka Nerd Font** — not in apt repos, install manually:
+
+```bash
+# grab IosevkaTerm.zip from https://github.com/ryanoasis/nerd-fonts/releases
+mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+```
+
+**betterlockscreen** — not in apt repos:
 
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install Rust + Cargo** (needed for termusic):
+**Rust + Cargo** (needed for termusic):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source ~/.cargo/env
-```
-
-**Install termusic:**
-
-```bash
 cargo install termusic
 ```
 
-> **Kitty not in your repos?** Grab it directly:
+> **Kitty not in your repos?**
 >
 > ```bash
 > curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin
-> ```
-
-> **Zig not in apt?** Either use snap:
->
-> ```bash
-> sudo snap install zig --classic --beta
-> ```
->
-> or grab the latest version directly from [ziglang.org/download](https://ziglang.org/download) - download the `zig-linux-x86_64-X.Y.Z.tar.xz` for your version, then:
->
-> ```bash
-> tar -xf zig-linux-x86_64-X.Y.Z.tar.xz
-> sudo mv zig-linux-x86_64-X.Y.Z /opt/zig
-> echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
 > ```
 
 </details>
@@ -170,48 +169,54 @@ sudo rpm --import https://brave-browser-rpm-release.s3.brave.com/brave-core.asc
 ```bash
 sudo dnf install -y kitty brave-browser rofi flameshot xclip playerctl \
   blueman thunar dunst NetworkManager wireplumber gawk picom \
-  zig lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
+  lua libX11-devel libXft-devel freetype-devel fontconfig-devel libXinerama-devel
 ```
 
-> **nmtui** ships with NetworkManager - just run `nmtui` in a terminal to manage connections.
+> **nmtui** ships with NetworkManager — run `nmtui` to manage connections.
 
-**xwallpaper** - easiest via COPR:
+**Install Zig** — the Fedora/EPEL repos are behind, so grab it manually:
+
+```bash
+wget https://ziglang.org/download/0.15.2/zig-linux-x86_64-0.15.2.tar.xz
+tar -xf zig-linux-x86_64-0.15.2.tar.xz
+sudo mv zig-linux-x86_64-0.15.2 /opt/zig
+echo 'export PATH=$PATH:/opt/zig' >> ~/.bashrc && source ~/.bashrc
+```
+
+> **On Fedora 42+** you can try `sudo dnf install zig` first and check the version with `zig version`. If it's not 0.15.2, use the manual method above.
+
+**xwallpaper** — via COPR:
 
 ```bash
 sudo dnf copr enable linuxredneck/xwallpaper
 sudo dnf install xwallpaper
 ```
 
-or build from source if you'd rather not use COPR:
-
-```bash
-sudo dnf install -y libX11-devel libXft-devel imlib2-devel
-git clone https://github.com/stoeckmann/xwallpaper
-cd xwallpaper && ./autogen.sh && ./configure && make && sudo make install
-```
-
-> **Iosevka Nerd Font** isn't in Fedora repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
+> prefer not to use COPR? build from source:
 >
 > ```bash
-> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+> sudo dnf install -y libX11-devel libXft-devel imlib2-devel
+> git clone https://github.com/stoeckmann/xwallpaper
+> cd xwallpaper && ./autogen.sh && ./configure && make && sudo make install
 > ```
 
-**Install betterlockscreen manually** (not in Fedora repos):
+**Iosevka Nerd Font** — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases):
+
+```bash
+mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+```
+
+**betterlockscreen** — not in Fedora repos:
 
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install Rust + Cargo** (needed for termusic):
+**Rust + Cargo** (needed for termusic):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source ~/.cargo/env
-```
-
-**Install termusic:**
-
-```bash
 cargo install termusic
 ```
 
@@ -228,7 +233,7 @@ sudo zypper addrepo https://brave-browser-rpm-release.s3.brave.com/brave-browser
 sudo zypper refresh
 ```
 
-**Add the X11:XOrg repo (needed for picom):**
+**Add the X11:XOrg repo** (needed for picom):
 
 ```bash
 sudo zypper addrepo https://download.opensuse.org/repositories/X11:XOrg/openSUSE_Tumbleweed/X11:XOrg.repo
@@ -244,32 +249,27 @@ sudo zypper install -y kitty brave-browser rofi flameshot xclip playerctl \
   fontconfig-devel libXinerama-devel
 ```
 
-> **nmtui** ships with NetworkManager - just run `nmtui` in a terminal to manage connections.
+> **nmtui** ships with NetworkManager — run `nmtui` to manage connections.
 
-**Install betterlockscreen manually** (not in openSUSE repos):
+**Iosevka Nerd Font** — grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases):
+
+```bash
+mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
+```
+
+**betterlockscreen** — not in openSUSE repos:
 
 ```bash
 wget https://raw.githubusercontent.com/betterlockscreen/betterlockscreen/main/install.sh -O - -q | sudo bash -s system
 ```
 
-**Install Rust + Cargo** (needed for termusic):
+**Rust + Cargo** (needed for termusic):
 
 ```bash
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 source ~/.cargo/env
-```
-
-**Install termusic:**
-
-```bash
 cargo install termusic
 ```
-
-> **Iosevka Nerd Font** isn't in openSUSE repos - grab `IosevkaTerm.zip` from [nerd-fonts releases](https://github.com/ryanoasis/nerd-fonts/releases) and install manually:
->
-> ```bash
-> mkdir -p ~/.local/share/fonts && cp *.ttf ~/.local/share/fonts && fc-cache -fv
-> ```
 
 </details>
 
@@ -278,37 +278,35 @@ cargo install termusic
 ### Step 2 - Install the Config
 
 ```bash
-# Clone the repo
 git clone https://github.com/theidioticdev/oxwm-dotfile
 cd oxwm-dotfile
 
-# Back up existing configs (safe to run even if they don't exist)
+# back up existing configs (safe to run even if they don't exist)
 [ -d ~/.config/oxwm ]      && mv ~/.config/oxwm      ~/.config/oxwm_backup
 [ -d ~/.config/fastfetch ] && mv ~/.config/fastfetch  ~/.config/fastfetch_backup
 [ -f ~/.bashrc ]           && mv ~/.bashrc             ~/.bashrc_backup
 
-# Copy configs
+# copy configs
 cp -r ./oxwm ~/.config/
 cp -r ./fastfetch ~/.config/
 
-# Copy wallpapers
+# copy wallpapers
 mkdir -p ~/dotfiles/
 cp -r ./walls ~/dotfiles/
 ```
 
-> **Before the next step** - edit `oxwm-thmctl` to point at your wallpaper directories:
->
-> ```bash
-> nano oxwm-thmctl  # switch nano for any editor you use (e.g. nvim, micro, emacs, etc...)
-> ```
+**Before the next step** — edit `oxwm-thmctl` to point at your wallpaper directories:
 
 ```bash
-# Make oxwm-thmctl executable and move it to PATH
+nano oxwm-thmctl  # or nvim, micro, emacs, whatever
+```
+
+```bash
 chmod +x oxwm-thmctl
 sudo cp oxwm-thmctl /usr/local/bin/  # or ~/.local/bin/
 ```
 
-You don't have to use the included wallpapers - any folder works, just update the paths in `oxwm-thmctl`.
+You don't have to use the included wallpapers — any folder works, just update the paths in `oxwm-thmctl`.
 
 ---
 
@@ -353,7 +351,7 @@ You don't have to use the included wallpapers - any folder works, just update th
 |---------|--------------|
 | `Super + 1-9` | switch to workspace |
 | `Super + Shift + 1-9` | move window to workspace |
-| `Super + Ctrl + 1-9` | toggle-view multiple workspaces at once |
+| `Super + Ctrl + 1-9` | toggle-view multiple workspaces |
 | `Super + Ctrl + Shift + 1-9` | pin window to multiple workspaces |
 
 ### multi-monitor
@@ -375,33 +373,33 @@ You don't have to use the included wallpapers - any folder works, just update th
 
 ### media keys
 
-volume up/down/mute + play/pause/next/prev all work out of the box via PipeWire/WirePlumber + playerctl
+volume up/down/mute + play/pause/next/prev all work out of the box via PipeWire/WirePlumber + playerctl.
 
 ---
 
 ## Customization
 
-config lives at `~/.config/oxwm/config.lua` - edit it, hit `Super + Shift + R`, done
+config lives at `~/.config/oxwm/config.lua` — edit it, hit `Super + Shift + R`, done.
 
-### switching color schemes
+### switching themes
 
-6 themes are included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, and `other` (wallpaper-agnostic fallback)
+6 themes included: `tokyonight`, `gruvbox`, `nord`, `catppuccin`, `oxocarbon`, `other` (wallpaper-agnostic fallback)
 
-the easiest way is via the theme switcher - `Super + Space` → `W` - it auto-swaps the theme based on your wallpaper folder name and hot-reloads instantly
+easiest way is the theme switcher — `Super + Space` → `W` — auto-swaps based on wallpaper folder name and hot-reloads instantly.
 
-or change it manually by editing one line in the config:
+or manually change one line in the config:
 
 ```lua
 local theme_name = "nord" -- swap this out
 ```
 
-### adding keybinds
+### keybinds
 
 ```lua
 oxwm.key.bind({ modkey }, "YourKey", oxwm.spawn({ "your-command" }))
 ```
 
-### adding window rules
+### window rules
 
 ```lua
 oxwm.rule.add({ instance = "your-app", tag = 3 })         -- auto-send to workspace 3
@@ -409,7 +407,7 @@ oxwm.rule.add({ instance = "your-app", floating = true })  -- always float
 ```
 
 ```bash
-# to find the WM class of an app for use in rules:
+# find the WM class of an app:
 xprop WM_CLASS
 ```
 
@@ -417,8 +415,8 @@ xprop WM_CLASS
 
 ## Contributing
 
-fork it, break it, make it yours. issues and PRs are welcome if you've got something good
+fork it, break it, make it yours. issues and PRs welcome.
 
 ## License
 
-GPL-3.0 - see [LICENSE](LICENSE) for the full text. tl;dr: use it, modify it, share it, just keep it open source
+GPL-3.0 — see [LICENSE](LICENSE). tl;dr: use it, modify it, share it, keep it open source.
