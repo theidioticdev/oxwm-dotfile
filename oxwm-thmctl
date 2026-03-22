@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directory where your wallpapers are stored (edit this to match your setup)
-WALL_DIR="$HOME/dotfiles/oxwm-dotfile/walls"
+WALL_DIR="$HOME/dotfiles/oxwm-btw/walls"
 
 # Path to OXWM's main config file (used to swap the color theme)
 CONFIG_FILE="$HOME/.config/oxwm/config.lua"
